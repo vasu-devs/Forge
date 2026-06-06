@@ -118,6 +118,21 @@ Four principles run through every skill and every script:
 
 You rarely call skills by name — they trigger from what you're doing. A typical feature slice:
 
+```mermaid
+sequenceDiagram
+  participant You
+  participant forge
+  You->>forge: add OAuth login
+  forge->>You: brainstorm questions (HARD GATE)
+  You-->>forge: approve spec
+  forge->>forge: plan, vertical slices
+  forge->>forge: tdd, failing test first then implement
+  forge->>forge: review (fresh reviewer)
+  forge->>You: verify, GREEN output as evidence
+```
+
+The same slice, step by step:
+
 ```text
 you:  add OAuth login to the settings page
 
@@ -193,22 +208,19 @@ Skills now appear as `forge:tdd`, `forge:debug`, `forge:design-ui`, etc.
 
 You mostly **don't invoke skills manually** — they trigger from what you're doing. Just work normally and forge's discipline kicks in at the right phase. The intended flow:
 
-```
-forge:understand   ── map unfamiliar code before you touch it
-      │
-forge:brainstorm   ── turn a vague idea into an approved written spec   (HARD GATE: no code yet)
-      │
-forge:architect    ── design the shape; search-first; design-it-twice
-      │
-forge:plan         ── break into vertical, test-first slices (no placeholders)
-      │
-forge:tdd  ⇄  forge:debug      ── implement test-first; root-cause failures
-      │        (forge:orchestrate to fan independent slices out to parallel agents)
-forge:review       ── two-axis review by a fresh reviewer (spec + standards)
-      │
-forge:verify  /  forge:eval    ── prove it (deterministic) / measure it (LLM/non-deterministic)
-      │
-forge:ship         ── verify-first, clean up, integrate (never pushes without asking)
+```mermaid
+flowchart TD
+  U["forge:understand — map the code"] --> B["forge:brainstorm — approved spec (HARD GATE)"]
+  B --> A["forge:architect — design the shape"]
+  A --> P["forge:plan — vertical test-first slices"]
+  P --> T["forge:tdd — red, green, refactor"]
+  T <--> Dg["forge:debug — root-cause first"]
+  T --> R["forge:review — fresh reviewer: spec + standards"]
+  R --> V["forge:verify — prove it with evidence"]
+  V --> S["forge:ship — verify-first, never push unasked"]
+  P -. "fan out independent slices" .-> O["forge:orchestrate"]
+  O -.-> T
+  V -. "LLM / non-deterministic" .-> E["forge:eval — pass@k / pass^k"]
 ```
 
 - `forge:design-ui` slots in whenever you build frontend.
@@ -246,6 +258,16 @@ You can always invoke a skill explicitly — *"use forge:architect for this"* or
 
 This is what makes forge get better over time. It's a loop of hooks, all backed by local files under `~/.claude/forge-data/`.
 
+```mermaid
+flowchart LR
+  act["Edit / Write / Bash"] -->|PostToolUse| obs[("observations JSONL")]
+  obs -->|"Stop hook (every N actions)"| dist["distiller — claude -p"]
+  dist --> gate{"quality gate"}
+  gate -->|pass| store[("instincts + global lessons")]
+  gate -->|fail| drop["discarded"]
+  store -->|SessionStart| inject["injected into next session"]
+```
+
 ### 1. Capture — `PostToolUse` hook
 
 Every `Edit` / `Write` / `Bash` action is logged as one compact line (tool + file/command, truncated) to a **project-scoped** observations log. Deterministic, fast, fire-and-forget — it survives context compaction, so the learner always has ground truth of what actually happened.
@@ -265,6 +287,24 @@ When a turn ends, a tiny hook checks a **throttle**. Once `FORGE_LEARN_EVERY` (d
 4. Appends survivors to the stores; dedup keeps the highest-confidence copy.
 
 It runs **detached and non-blocking** (you never wait on it), uses an env-guard (`FORGE_DISTILLER=1`) so the headless call can't recursively trigger itself, and **silently no-ops on any error** — it can never break your tool flow.
+
+The gate is a strict funnel — a candidate lesson must clear every check or it's dropped:
+
+```mermaid
+flowchart TD
+  t["session transcript"] --> m["model extracts candidate lessons (JSON)"]
+  m --> c1{"confidence >= floor?"}
+  c1 -->|no| x["drop"]
+  c1 -->|yes| c2{"length ok? (not one-word)"}
+  c2 -->|no| x
+  c2 -->|yes| c3{"not a platitude?"}
+  c3 -->|no| x
+  c3 -->|yes| c4{"global? anonymized (no path/filename)"}
+  c4 -->|no| x
+  c4 -->|yes| cap{"within per-run caps?"}
+  cap -->|no| x
+  cap -->|yes| dedupe["dedupe, keep highest confidence"] --> save[("store")]
+```
 
 ### 3. Recall — `SessionStart` hook
 
@@ -428,6 +468,31 @@ Nothing leaves your machine except the background `claude -p` calls you'd alread
 ---
 
 ## Architecture
+
+How Claude Code events flow through forge's scripts into the local data store:
+
+```mermaid
+flowchart TB
+  subgraph CC["Claude Code events"]
+    e1["PostToolUse"]
+    e2["SessionStart"]
+    e3["Stop"]
+    e4["SessionEnd"]
+  end
+  e1 --> s1["log-tool-use.js"]
+  e2 --> s2["inject-instincts.js"]
+  e3 --> s3["stop-autolearn.js"]
+  s3 --> s4["distill.js"]
+  e4 --> s5["session-index.js"]
+  s1 --> data[("~/.claude/forge-data")]
+  s2 --> data
+  s3 --> data
+  s4 --> data
+  s5 -. "opt-in" .-> mem[("memory/")]
+  s4 -. "claude -p" .-> api["Claude"]
+```
+
+Repository layout:
 
 ```
 forge/

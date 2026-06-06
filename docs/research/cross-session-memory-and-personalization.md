@@ -2,7 +2,7 @@
 
 > **Provenance:** Produced 2026‑06‑06 by a deep‑research harness run: **105 agents · 23 sources fetched · 111 claims extracted · 25 adversarially verified (24 confirmed, 1 killed) · ~3.0M tokens.**
 > Method: decompose into 5 angles → 5 parallel web‑search agents → URL‑dedup + fetch → 3‑vote adversarial verification per claim (≥2/3 refutes kills it) → synthesize, rank by confidence, cite.
-> This file is the durable record so the tokens spent are reusable knowledge. It informed the `forge memory` subsystem (`forge:recall`).
+> This file is the durable record so the tokens spent are reusable knowledge. It informed the `shunya memory` subsystem (`shunya:recall`).
 
 ---
 
@@ -70,7 +70,7 @@ Each session begins with a **fresh context window**. Two mechanisms carry knowle
   - **recency** = exponential decay (**factor 0.995**) over hours since last access.
   - **importance** = LLM‑rated **1–10** (1 mundane … 10 poignant).
   - **relevance** = cosine similarity between the memory's embedding and the query embedding.
-- This is the hybrid scoring to adapt. *(forge memory uses relevance + recency + importance with tuned weights.)*
+- This is the hybrid scoring to adapt. *(shunya memory uses relevance + recency + importance with tuned weights.)*
 
 ### Mem0 — production extract/consolidate pipeline (verified 3‑0)
 ([arXiv 2504.19413](https://arxiv.org/pdf/2504.19413))
@@ -104,37 +104,37 @@ Each session begins with a **fresh context window**. Two mechanisms carry knowle
 
 - **Transcripts** are stored on disk as **JSONL** under `~/.claude/projects/<encoded-project>/<sessionId>.jsonl` (see [session file format write‑up](https://databunny.medium.com/inside-claude-code-the-session-file-format-and-how-to-inspect-it-b9998e66d56b), [code.claude.com/docs/en/sessions](https://code.claude.com/docs/en/sessions)).
 - **Resume / continue:** `claude --resume <sessionId>` / `claude --continue` re‑open a past session — the hook for "pick up that exact chat and go deeper."
-- **Hooks** ([code.claude.com/docs/en/hooks](https://code.claude.com/docs/en/hooks)): `SessionStart` (inject context), `PostToolUse` (observe actions), `Stop` / `SessionEnd` (end‑of‑turn / end‑of‑session) — the integration points for *inject at start* + *distill/index at end*. (Confirmed in practice while building forge: `SessionStart`/`Stop`/`PostToolUse`/`SessionEnd` receive JSON on stdin incl. `transcript_path`; `${CLAUDE_PLUGIN_ROOT}` resolves a plugin's own dir.)
+- **Hooks** ([code.claude.com/docs/en/hooks](https://code.claude.com/docs/en/hooks)): `SessionStart` (inject context), `PostToolUse` (observe actions), `Stop` / `SessionEnd` (end‑of‑turn / end‑of‑session) — the integration points for *inject at start* + *distill/index at end*. (Confirmed in practice while building shunya: `SessionStart`/`Stop`/`PostToolUse`/`SessionEnd` receive JSON on stdin incl. `transcript_path`; `${CLAUDE_PLUGIN_ROOT}` resolves a plugin's own dir.)
 - **Auto memory** (`MEMORY.md`, §2) is the native per‑project layer; the gaps vs ChatGPT‑style memory are: (a) no semantic recall over *all* chats, (b) no easy "resume that specific chat," (c) no *global* personalization profile.
 - **Prior art:** [`claude-mem`](https://github.com/thedotmack/claude-mem) already does transcript‑based memory for Claude Code — worth studying.
 
 ---
 
-## 6. Recommended architecture → what `forge memory` implements
+## 6. Recommended architecture → what `shunya memory` implements
 
 `ingest JSONL transcripts → extract facts/preferences/topics (with source‑chat refs) → store as KV + an embeddings index → retrieve at SessionStart + on demand → link back to source chats so the user can resume deeper → grow over time → with conflict‑resolution, decay, global‑vs‑project scoping, and user‑inspectable storage` — **extending** (not replacing) the existing hook‑based instinct/learning loop.
 
-How `forge memory` maps to the research:
-| Research finding | forge implementation |
+How `shunya memory` maps to the research:
+| Research finding | shunya implementation |
 |---|---|
 | Two‑mechanism memory (saved + dynamic) | always‑on **`profile.md`** (saved/stable) + **memories.jsonl** (dynamic, distilled) |
-| Preload‑profile vs on‑demand retrieval | `profile.md` injected at **SessionStart**; **`forge:recall`** does on‑demand embedding search |
+| Preload‑profile vs on‑demand retrieval | `profile.md` injected at **SessionStart**; **`shunya:recall`** does on‑demand embedding search |
 | Generative Agents scoring | `score = relevance + recency·0.5 + importance·0.5`, recency = daily decay |
 | Mem0 extract/consolidate | Sonnet extraction at index time; dedup/append; (conflict‑resolution = future) |
 | Source‑chat references | every memory/chat stores `sourceSessionId` → `claude --resume <id>` |
 | Local embeddings | `@huggingface/transformers` `all-MiniLM-L6-v2` (384‑dim), on‑device |
 | Privacy | local plaintext JSONL/markdown, user‑inspectable, never transmitted |
-| Memory tool / note‑taking / compaction | complemented by forge's `learn` (instincts) + native `MEMORY.md` |
+| Memory tool / note‑taking / compaction | complemented by shunya's `learn` (instincts) + native `MEMORY.md` |
 
 ---
 
 ## Caveats (time‑sensitive)
 This area moves fast. Claude Code auto‑memory needs **v2.1.59+**; the **memory tool** (`memory_20250818`) and **compaction** (`compact-2026-01-12`) are recent betas; the 200‑line/25KB preload limit may change. Anthropic doc URLs are migrating `docs.anthropic.com → code.claude.com / platform.claude.com`. ChatGPT memory naming has drifted ("chat history" → "Reference Chat History"); a mid‑2026 "Dreaming V3" memory rework was reported but did not deprecate saved memories. ChatGPT internal sub‑components come from **reverse‑engineering**, not official docs. Zep's benchmark numbers are **vendor self‑baselined**. The ChatGPT control‑granularity claim was **refuted** and remains uncertain.
 
-## Open questions the research flagged (now mostly answered while building forge)
+## Open questions the research flagged (now mostly answered while building shunya)
 1. Exact `SessionStart`/`Stop`/`SessionEnd` hook contracts & payloads → **confirmed in practice** (stdin JSON incl. `transcript_path`, `stop_hook_active`; `${CLAUDE_PLUGIN_ROOT}`).
 2. Exact JSONL transcript schema + how `--resume` maps a sessionId → transcript → **sessionId == filename stem**; transcripts under `~/.claude/projects/<enc>/<sessionId>.jsonl`.
-3. Which conflict‑resolution algorithm wins locally (Mem0 two‑phase vs Zep bi‑temporal vs Gen‑Agents decay) → forge v1 uses recency decay + dedup; bi‑temporal is a future upgrade.
+3. Which conflict‑resolution algorithm wins locally (Mem0 two‑phase vs Zep bi‑temporal vs Gen‑Agents decay) → shunya v1 uses recency decay + dedup; bi‑temporal is a future upgrade.
 4. Concrete privacy mitigations for a local plaintext auto‑injected store → inspectable files, treat as untrusted, local‑only.
 
 ---

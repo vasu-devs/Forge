@@ -35,4 +35,4 @@ Assert observable, external behavior. Renaming a private function, splitting a c
 | "It's the spirit that matters, not the ritual." | The ritual *is* the spirit. The order (fail → pass) is what creates the guarantee. |
 
 ## Exit
-After a coherent chunk: `forge:review` (quality), then `forge:verify` (proof) before any "done." For bugs, start from `forge:debug` to get a reproducing test first.
+After a coherent chunk: `shunya:review` (quality), then `shunya:verify` (proof) before any "done." For bugs, start from `shunya:debug` to get a reproducing test first.

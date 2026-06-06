@@ -1,10 +1,10 @@
 # Credits
 
-`forge` is a **synthesis** — it distills the best, most distinctive *ideas and techniques* from
+`shunya` is a **synthesis** — it distills the best, most distinctive *ideas and techniques* from
 several excellent open skill sets into one cohesive lifecycle. It does not copy their code or
 text; every skill and script here is original. Enormous credit to the projects that shaped it:
 
-| Project | Author | License | What forge learned from it |
+| Project | Author | License | What shunya learned from it |
 |---|---|---|---|
 | [Superpowers](https://github.com/obra/superpowers) | Jesse Vincent (obra) | MIT | TDD iron law (delete code written before its test, watch it fail), systematic-debugging (3-fixes → question the architecture), verification-as-honesty, brainstorming hard-gate, no-placeholder plans |
 | [skills.sh](https://github.com/mattpocock/skills) | Matt Pocock | MIT | "feedback loop IS the skill" debugging, deletion test + two-adapter seam, Design-It-Twice, two-axis (Standards/Spec) review, ubiquitous-language |

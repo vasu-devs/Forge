@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict';
-// SessionStart hook: inject forge's learned context into every session —
+// SessionStart hook: inject shunya's learned context into every session —
 //   (1) GLOBAL lessons: anonymized, cross-project, loaded everywhere.
 //   (2) PROJECT instincts: specific to this repo, loaded only where they exist.
 // Emits nothing when there's nothing to say. Must never throw.
@@ -27,21 +27,21 @@ function main() {
     const pf = path.join(L.BASE, 'memory', 'profile.md');
     if (fs.existsSync(pf)) {
       const p = fs.readFileSync(pf, 'utf8').trim().slice(0, 4000);
-      if (p) profileSec = '## forge — about you (personalization)\nWho you are and how you like to work, learned across past sessions. Tailor to it; an explicit user instruction always wins.\n\n' + p;
+      if (p) profileSec = '## shunya — about you (personalization)\nWho you are and how you like to work, learned across past sessions. Tailor to it; an explicit user instruction always wins.\n\n' + p;
     }
   } catch {}
 
-  const global = pick(L.dedupeInstincts(L.readJsonl(L.globalFile())), 'FORGE_GLOBAL_MIN_CONF', 'FORGE_GLOBAL_MAX', '15');
-  const project = pick(L.dedupeInstincts(L.readJsonl(L.instinctsFile(projDir))), 'FORGE_INSTINCT_MIN_CONF', 'FORGE_INSTINCT_MAX', '12');
+  const global = pick(L.dedupeInstincts(L.readJsonl(L.globalFile())), 'SHUNYA_GLOBAL_MIN_CONF', 'SHUNYA_GLOBAL_MAX', '15');
+  const project = pick(L.dedupeInstincts(L.readJsonl(L.instinctsFile(projDir))), 'SHUNYA_INSTINCT_MIN_CONF', 'SHUNYA_INSTINCT_MAX', '12');
 
   const parts = [];
   const gSec = section(
-    'forge — global lessons (cross-project)',
+    'shunya — global lessons (cross-project)',
     'Anonymized lessons learned across past sessions everywhere. Strong priors for how to work well; an explicit user instruction always wins.',
     global
   );
   const pSec = section(
-    'forge — learned instincts for this project',
+    'shunya — learned instincts for this project',
     'Patterns distilled from past sessions in THIS repo. Priors, not laws — a user instruction overrides them.',
     project
   );

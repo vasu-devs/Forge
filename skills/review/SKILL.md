@@ -29,7 +29,7 @@ Assume there *are* problems and go find them. "I found zero issues" almost alway
 ## Receiving the findings (when feedback comes to you)
 - Evaluate each point **technically**. Don't perform agreement ("Great catch!") — just assess and act.
 - If a finding is wrong, push back with reasoning rather than complying blindly.
-- If asked to "implement this properly/fully," grep for actual usage first — don't build flexibility nobody needs (`forge:principles` #2).
+- If asked to "implement this properly/fully," grep for actual usage first — don't build flexibility nobody needs (`shunya:principles` #2).
 
 ## Exit
-Fix Critical/Important, then `forge:verify` with evidence, then `forge:ship`.
+Fix Critical/Important, then `shunya:verify` with evidence, then `shunya:ship`.

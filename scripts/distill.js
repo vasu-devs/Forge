@@ -31,7 +31,7 @@ function flatten(msgs) {
 }
 
 function buildPrompt(convo) {
-  return `You are forge's learning distiller. Read this work session and extract ONLY high-value, durable lessons worth remembering next time. The quality bar is STRICT: a lesson must be correct, specific, evidence-backed, and non-obvious. If nothing clears the bar, return empty arrays — that is the expected, common outcome. NEVER invent generic platitudes like "write clean code" or "follow best practices"; those are rejected.
+  return `You are shunya's learning distiller. Read this work session and extract ONLY high-value, durable lessons worth remembering next time. The quality bar is STRICT: a lesson must be correct, specific, evidence-backed, and non-obvious. If nothing clears the bar, return empty arrays — that is the expected, common outcome. NEVER invent generic platitudes like "write clean code" or "follow best practices"; those are rejected.
 
 Return two kinds:
 - "project": lessons specific to THIS codebase — its conventions, build/test quirks, domain rules, concrete gotchas.
@@ -48,15 +48,15 @@ ${convo}`;
 }
 
 function callModel(prompt) {
-  if (process.env.FORGE_DISTILL_MOCK) { try { return fs.readFileSync(process.env.FORGE_DISTILL_MOCK, 'utf8'); } catch { return null; } }
+  if (process.env.SHUNYA_DISTILL_MOCK) { try { return fs.readFileSync(process.env.SHUNYA_DISTILL_MOCK, 'utf8'); } catch { return null; } }
   const { spawnSync } = require('child_process');
-  const model = process.env.FORGE_LEARN_MODEL || 'claude-haiku-4-5-20251001';
+  const model = process.env.SHUNYA_LEARN_MODEL || 'claude-haiku-4-5-20251001';
   // NOTE: do NOT use --bare — it strips authentication ("Not logged in"). Recursion is
-  // prevented instead by the FORGE_DISTILLER=1 env guard that stop-autolearn.js checks.
+  // prevented instead by the SHUNYA_DISTILLER=1 env guard that stop-autolearn.js checks.
   const r = spawnSync('claude', ['-p', '--model', model, '--output-format', 'json'], {
     input: prompt, encoding: 'utf8', maxBuffer: 16 * 1024 * 1024,
     shell: process.platform === 'win32',
-    env: { ...process.env, FORGE_DISTILLER: '1' }
+    env: { ...process.env, SHUNYA_DISTILLER: '1' }
   });
   if (r.status !== 0) { log('claude -p failed: status=' + r.status + ' err=' + String(r.stderr || '').slice(0, 300)); return null; }
   return r.stdout;
@@ -87,7 +87,7 @@ function main() {
   const transcript = process.argv[2];
   const cwd = process.argv[3] || process.cwd();
   if (!transcript || !fs.existsSync(transcript)) { log('no transcript at ' + transcript); return; }
-  const minConf = parseFloat(process.env.FORGE_LEARN_MIN_CONF || '0.6');
+  const minConf = parseFloat(process.env.SHUNYA_LEARN_MIN_CONF || '0.6');
   const convo = flatten(readTranscript(transcript, 50));
   if (convo.length < 200) { log('transcript too short; skip'); return; }
 

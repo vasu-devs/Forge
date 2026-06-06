@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 // PostToolUse hook: fire-and-forget logging of Edit/Write/Bash actions to a
-// project-scoped observations log that forge:learn later distills into instincts.
+// project-scoped observations log that shunya:learn later distills into instincts.
 // MUST always exit 0 and never throw — it must never disrupt the user's tool flow.
 const fs = require('fs');
 function main() {

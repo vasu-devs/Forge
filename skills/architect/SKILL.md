@@ -36,7 +36,7 @@ If subagents are available, dispatch them in parallel — one design each — so
 ## 4. Earn every abstraction
 
 - **Deletion test:** imagine deleting this module. If the same complexity reappears, duplicated across N callers, the module earned its place. If not, you're abstracting for its own sake — don't.
-- **Two-adapter rule:** one adapter is a *hypothetical* seam; two real adapters prove a seam exists. Don't introduce an interface for a single implementation "in case." (This is `forge:principles` #2 applied to structure.)
+- **Two-adapter rule:** one adapter is a *hypothetical* seam; two real adapters prove a seam exists. Don't introduce an interface for a single implementation "in case." (This is `shunya:principles` #2 applied to structure.)
 
 ## 5. Name and record
 
@@ -44,4 +44,4 @@ If subagents are available, dispatch them in parallel — one design each — so
 - Record an **ADR** only when the decision is hard to reverse *and* surprising without context *and* a real trade-off. Capture the *decision and why*, not file locations (those rot).
 
 ## Exit
-Hand the chosen shape to `forge:plan` to break into vertical slices, then `forge:tdd` to build.
+Hand the chosen shape to `shunya:plan` to break into vertical slices, then `shunya:tdd` to build.

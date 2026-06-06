@@ -1,7 +1,7 @@
-# forge generates learned data OUTSIDE this repo (~/.claude/forge-data/).
+# shunya generates learned data OUTSIDE this repo (~/.claude/shunya-data/).
 # These patterns are a defensive belt — never commit learned data, logs, or secrets,
 # which can contain raw commands, file paths, internal details, or tokens.
-forge-data/
+shunya-data/
 *.jsonl
 *.log
 LESSONS.md
@@ -16,3 +16,4 @@ Thumbs.db
 *.local
 .env
 .env.*
+package-lock.json

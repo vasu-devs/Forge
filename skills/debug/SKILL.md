@@ -26,4 +26,4 @@ Tag every diagnostic probe you add with a marker like `[DEBUG-a4f2]` so cleanup 
 If you've tried **3 fixes and the problem keeps reappearing somewhere new, STOP.** Do not attempt fix #4. Cascading symptom-fixes mean your mental model of the architecture is wrong — go back to Phase 1 and question the *structure*, not the hypothesis. (Your human's tells — "stop guessing", "ultrathink this", "why does this keep happening" — are the same signal: restart at root cause.)
 
 ## Close the loop
-Once you've found and fixed the root cause, the reproducing test becomes a **permanent regression test** (hand to `forge:tdd` if it isn't already a test). Remove all `[DEBUG-]` probes. Then `forge:verify` with the now-green test as evidence.
+Once you've found and fixed the root cause, the reproducing test becomes a **permanent regression test** (hand to `shunya:tdd` if it isn't already a test). Remove all `[DEBUG-]` probes. Then `shunya:verify` with the now-green test as evidence.

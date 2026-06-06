@@ -26,7 +26,7 @@ These are the AI tells; treat them as hard checks, not suggestions:
 - **Kill the cheap defaults:** generic 1px gray borders everywhere, `shadow-md` on everything, and `linear`/`ease-in-out` transitions. Use intentional borders, layered/soft shadows, and custom easing/springs.
 
 ## Verify visually — never ship CSS blind
-Render the real view and *look at it* (a dev-preview harness + headless browser / Playwright with system Chrome) before declaring it done. Check spacing, hierarchy, contrast, overflow, and small-screen fit on the actual rendered output — not from reading the CSS. (This is `forge:verify` applied to pixels.)
+Render the real view and *look at it* (a dev-preview harness + headless browser / Playwright with system Chrome) before declaring it done. Check spacing, hierarchy, contrast, overflow, and small-screen fit on the actual rendered output — not from reading the CSS. (This is `shunya:verify` applied to pixels.)
 
 ## Pre-flight gate
 Before "done," tick: direction committed · type deliberate · spacing rhythm consistent · hierarchy clear · states (hover/focus/empty/error) handled · responsive checked · all bans above honestly clear · rendered-and-eyeballed. If any box can't be honestly ticked, it isn't finished.

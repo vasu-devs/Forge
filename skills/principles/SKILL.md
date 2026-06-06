@@ -3,9 +3,9 @@ name: principles
 description: The operating doctrine for all engineering work — think before coding, simplicity first, surgical changes, goal-driven execution, and evidence over assertion. Use at the start of any non-trivial task, before writing or changing code, when choosing between approaches, or whenever you feel the urge to assume, over-build, or claim something works without checking.
 ---
 
-# Engineering Principles (forge constitution)
+# Engineering Principles (shunya constitution)
 
-These five principles govern every other forge skill. They exist because a capable model's default failure modes are predictable: it assumes silently, over-builds, edits things it doesn't understand, and reports success it hasn't verified. Each principle has a falsifiable *test* — if you can't pass the test, you've violated the principle.
+These five principles govern every other shunya skill. They exist because a capable model's default failure modes are predictable: it assumes silently, over-builds, edits things it doesn't understand, and reports success it hasn't verified. Each principle has a falsifiable *test* — if you can't pass the test, you've violated the principle.
 
 ## 1. Think before coding
 Don't assume. Don't hide confusion. Surface trade-offs.
@@ -17,7 +17,7 @@ Don't assume. Don't hide confusion. Surface trade-offs.
 ## 2. Simplicity first
 Write the minimum code that solves the *actual* problem. Nothing speculative.
 - No features beyond what was asked. No abstraction for single-use code. No configurability nobody requested. No error handling for impossible states.
-- **Test:** Would a senior engineer call this overcomplicated? If 200 lines could be 50, rewrite it. (See `forge:architect` for the deletion/seam tests on when an abstraction *is* earned.)
+- **Test:** Would a senior engineer call this overcomplicated? If 200 lines could be 50, rewrite it. (See `shunya:architect` for the deletion/seam tests on when an abstraction *is* earned.)
 
 ## 3. Surgical changes
 Touch only what the task requires. Clean up only your own mess.
@@ -34,7 +34,7 @@ Convert imperative tasks into verifiable goals, then loop until verified.
 ## 5. Evidence over assertion
 Never claim something works, is fixed, or is complete without fresh evidence in the same response.
 - Claiming completion without verification isn't efficiency — it's a false report. Run the check, then state the result.
-- "The agent said it passed" is not evidence; the diff/test output is. (See `forge:verify`.)
+- "The agent said it passed" is not evidence; the diff/test output is. (See `shunya:verify`.)
 - **Test:** Did you run the command and read its output *this turn*? If not, downgrade "it works" to "it should work — verifying now."
 
 ## Cross-cutting discipline

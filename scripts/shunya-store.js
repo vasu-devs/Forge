@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 'use strict';
-// forge instinct store CLI — invoked by the forge:learn skill (and usable by hand).
+// shunya instinct store CLI — invoked by the shunya:learn skill (and usable by hand).
 // Project is derived from the current working directory, matching the SessionStart hook.
-//   node forge-store.js list                      # show this project's instincts
-//   node forge-store.js add '<json|json-array>'   # add instinct(s): {trigger,action,confidence?,evidence?}
-//   node forge-store.js observations [n]           # show last n logged actions (default 40)
-//   node forge-store.js clear-observations         # wipe the observations log after distilling
-//   node forge-store.js remove <substring>         # drop instincts whose trigger/action matches
+//   node shunya-store.js list                      # show this project's instincts
+//   node shunya-store.js add '<json|json-array>'   # add instinct(s): {trigger,action,confidence?,evidence?}
+//   node shunya-store.js observations [n]           # show last n logged actions (default 40)
+//   node shunya-store.js clear-observations         # wipe the observations log after distilling
+//   node shunya-store.js remove <substring>         # drop instincts whose trigger/action matches
 const fs = require('fs');
 const L = require('./lib.js');
 
@@ -26,7 +26,7 @@ function addOne(o) {
 function add() {
   let json = process.argv[3];
   if (!json) { try { json = fs.readFileSync(0, 'utf8'); } catch {} }
-  let o; try { o = JSON.parse(json); } catch { console.error('forge-store add: invalid JSON'); process.exit(1); }
+  let o; try { o = JSON.parse(json); } catch { console.error('shunya-store add: invalid JSON'); process.exit(1); }
   if (Array.isArray(o)) o.forEach(addOne); else addOne(o);
 }
 function list() {
@@ -103,5 +103,5 @@ try {
   else if (cmd === 'add-global') addGlobal();
   else if (cmd === 'list-global') listGlobal();
   else if (cmd === 'remove-global') removeGlobal();
-  else console.log('usage: forge-store.js [list | add <json> | observations [n] | clear-observations | remove <substring> | list-global | add-global <json> | remove-global <substring>]');
-} catch (e) { console.error('forge-store error:', e.message); process.exit(1); }
+  else console.log('usage: shunya-store.js [list | add <json> | observations [n] | clear-observations | remove <substring> | list-global | add-global <json> | remove-global <substring>]');
+} catch (e) { console.error('shunya-store error:', e.message); process.exit(1); }

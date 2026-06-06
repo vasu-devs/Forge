@@ -8,7 +8,7 @@ description: Finish a completed piece of work and integrate it cleanly — verif
 The end of a task is where state gets messy — half-merged branches, orphaned worktrees, premature pushes. This closes work out cleanly.
 
 ## 1. Verify first, always
-Do not start shipping until `forge:verify` is green **with evidence** — tests, build, and typecheck pass, confirmed this turn. If anything is red or unverified, you're not finishing; you're still working.
+Do not start shipping until `shunya:verify` is green **with evidence** — tests, build, and typecheck pass, confirmed this turn. If anything is red or unverified, you're not finishing; you're still working.
 
 ## 2. Detect the environment
 Establish where you are before acting: Are you in a git worktree or the main checkout? On a feature branch, main, or detached HEAD? Is the tree clean? This determines which options are even valid.

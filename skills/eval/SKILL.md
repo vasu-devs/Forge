@@ -3,6 +3,15 @@ name: eval
 description: Measure non-deterministic behavior — LLM features, agents, prompts, or a skill itself — with repeatable evals instead of one-shot checks. Use when building or tuning AI/LLM functionality (ranking, extraction, generation, agent loops), when a feature could pass once by luck, or when validating that a prompt or skill actually changes behavior.
 ---
 
+```
+███████╗██╗   ██╗ █████╗ ██╗
+██╔════╝██║   ██║██╔══██╗██║
+█████╗  ██║   ██║███████║██║
+██╔══╝  ╚██╗ ██╔╝██╔══██║██║
+███████╗ ╚████╔╝ ██║  ██║███████╗
+╚══════╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝
+```
+
 # Eval-driven development
 
 Deterministic code gets `forge:verify` — run it once, read the output, done. **Non-deterministic behavior** (anything LLM- or agent-driven) needs evals, because a single green run can be luck. Evals are the unit tests of AI work: a repeatable input set + expected behavior + a grader, run enough times to trust the result.

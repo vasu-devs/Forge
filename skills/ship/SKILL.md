@@ -3,6 +3,15 @@ name: ship
 description: Finish a completed piece of work and integrate it cleanly — verify, then decide how to merge, PR, or set it aside. Use when implementation is done and tests pass, and you need to land the work and clean up.
 ---
 
+```
+███████╗██╗  ██╗██╗██████╗
+██╔════╝██║  ██║██║██╔══██╗
+███████╗███████║██║██████╔╝
+╚════██║██╔══██║██║██╔═══╝
+███████║██║  ██║██║██║
+╚══════╝╚═╝  ╚═╝╚═╝╚═╝
+```
+
 # Ship and clean up
 
 The end of a task is where state gets messy — half-merged branches, orphaned worktrees, premature pushes. This closes work out cleanly.

@@ -3,6 +3,15 @@ name: plan
 description: Break an approved spec or design into a precise, executable implementation plan. Use after the what/why and the shape are agreed, and before writing implementation code for any multi-step task.
 ---
 
+```
+██████╗ ██╗      █████╗ ███╗   ██╗
+██╔══██╗██║     ██╔══██╗████╗  ██║
+██████╔╝██║     ███████║██╔██╗ ██║
+██╔═══╝ ██║     ██╔══██║██║╚██╗██║
+██║     ███████╗██║  ██║██║ ╚████║
+╚═╝     ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝
+```
+
 # Plan in vertical, executable slices
 
 A plan good enough that a context-free executor with questionable taste could follow it without guessing. Vague plans get vague work.

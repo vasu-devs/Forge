@@ -3,6 +3,15 @@ name: debug
 description: Find the root cause of a bug, test failure, or performance regression before proposing any fix. Use the moment something is broken, throwing, failing, flaky, or slower than expected — and resist the urge to patch first.
 ---
 
+```
+██████╗ ███████╗██████╗ ██╗   ██╗ ██████╗
+██╔══██╗██╔════╝██╔══██╗██║   ██║██╔════╝
+██║  ██║█████╗  ██████╔╝██║   ██║██║  ███╗
+██║  ██║██╔══╝  ██╔══██╗██║   ██║██║   ██║
+██████╔╝███████╗██████╔╝╚██████╔╝╚██████╔╝
+╚═════╝ ╚══════╝╚═════╝  ╚═════╝  ╚═════╝
+```
+
 # Debug to root cause
 
 ## The Iron Law

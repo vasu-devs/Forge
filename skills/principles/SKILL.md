@@ -3,6 +3,15 @@ name: principles
 description: The operating doctrine for all engineering work — think before coding, simplicity first, surgical changes, goal-driven execution, and evidence over assertion. Use at the start of any non-trivial task, before writing or changing code, when choosing between approaches, or whenever you feel the urge to assume, over-build, or claim something works without checking.
 ---
 
+```
+██████╗ ██████╗ ██╗███╗   ██╗ ██████╗██╗██████╗ ██╗     ███████╗███████╗
+██╔══██╗██╔══██╗██║████╗  ██║██╔════╝██║██╔══██╗██║     ██╔════╝██╔════╝
+██████╔╝██████╔╝██║██╔██╗ ██║██║     ██║██████╔╝██║     █████╗  ███████╗
+██╔═══╝ ██╔══██╗██║██║╚██╗██║██║     ██║██╔═══╝ ██║     ██╔══╝  ╚════██║
+██║     ██║  ██║██║██║ ╚████║╚██████╗██║██║     ███████╗███████╗███████║
+╚═╝     ╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝ ╚═════╝╚═╝╚═╝     ╚══════╝╚══════╝╚══════╝
+```
+
 # Engineering Principles (forge constitution)
 
 These five principles govern every other forge skill. They exist because a capable model's default failure modes are predictable: it assumes silently, over-builds, edits things it doesn't understand, and reports success it hasn't verified. Each principle has a falsifiable *test* — if you can't pass the test, you've violated the principle.

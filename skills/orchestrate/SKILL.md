@@ -3,6 +3,15 @@ name: orchestrate
 description: Run multiple independent pieces of work in parallel with fresh subagents, then integrate the results. Use when you have 2+ tasks with no shared state or sequential dependency, when executing an implementation plan whose slices are independent, or when one large task decomposes into chunks that can progress at the same time.
 ---
 
+```
+ ██████╗ ██████╗  ██████╗██╗  ██╗███████╗███████╗████████╗██████╗  █████╗ ████████╗███████╗
+██╔═══██╗██╔══██╗██╔════╝██║  ██║██╔════╝██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝██╔════╝
+██║   ██║██████╔╝██║     ███████║█████╗  ███████╗   ██║   ██████╔╝███████║   ██║   █████╗
+██║   ██║██╔══██╗██║     ██╔══██║██╔══╝  ╚════██║   ██║   ██╔══██╗██╔══██║   ██║   ██╔══╝
+╚██████╔╝██║  ██║╚██████╗██║  ██║███████╗███████║   ██║   ██║  ██║██║  ██║   ██║   ███████╗
+ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝
+```
+
 # Orchestrate parallel work
 
 Fan-out is leverage — but only when the pieces are genuinely independent. Misapplied, it produces merge chaos and duplicated effort. This skill decides *when* to parallelize and *how* to keep it clean.

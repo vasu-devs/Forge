@@ -3,6 +3,15 @@ name: verify
 description: Prove that work is actually complete, fixed, or passing before saying so. Use right before claiming success, marking a task done, committing, or opening a PR — any moment you're about to assert that something works.
 ---
 
+```
+██╗   ██╗███████╗██████╗ ██╗███████╗██╗   ██╗
+██║   ██║██╔════╝██╔══██╗██║██╔════╝╚██╗ ██╔╝
+██║   ██║█████╗  ██████╔╝██║█████╗   ╚████╔╝
+╚██╗ ██╔╝██╔══╝  ██╔══██╗██║██╔══╝    ╚██╔╝
+ ╚████╔╝ ███████╗██║  ██║██║██║        ██║
+  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝╚═╝        ╚═╝
+```
+
 # Verify before you claim
 
 A success claim without evidence is a false report, not efficiency. This skill is the gate between "I think it works" and "it works."

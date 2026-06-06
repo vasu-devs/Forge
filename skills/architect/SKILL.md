@@ -3,6 +3,15 @@ name: architect
 description: Design the shape of a non-trivial module, API, or system before implementing it. Use when a design decision has more than one reasonable answer, when introducing a new abstraction or interface, or when getting the shape wrong would be expensive to undo.
 ---
 
+```
+ █████╗ ██████╗  ██████╗██╗  ██╗██╗████████╗███████╗ ██████╗████████╗
+██╔══██╗██╔══██╗██╔════╝██║  ██║██║╚══██╔══╝██╔════╝██╔════╝╚══██╔══╝
+███████║██████╔╝██║     ███████║██║   ██║   █████╗  ██║        ██║
+██╔══██║██╔══██╗██║     ██╔══██║██║   ██║   ██╔══╝  ██║        ██║
+██║  ██║██║  ██║╚██████╗██║  ██║██║   ██║   ███████╗╚██████╗   ██║
+╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝   ╚═╝   ╚══════╝ ╚═════╝   ╚═╝
+```
+
 # Architect the shape first
 
 Code is easy to write and hard to reshape. The interface you choose outlives the implementation. This skill produces a deliberate design instead of the first one that compiles.

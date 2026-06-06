@@ -3,6 +3,15 @@ name: brainstorm
 description: Turn a vague idea into an approved, written spec before any code is written. Use before building a feature, adding functionality, or changing behavior — whenever the work is more than a trivial mechanical edit and the requirements aren't already pinned down.
 ---
 
+```
+██████╗ ██████╗  █████╗ ██╗███╗   ██╗███████╗████████╗ ██████╗ ██████╗ ███╗   ███╗
+██╔══██╗██╔══██╗██╔══██╗██║████╗  ██║██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗████╗ ████║
+██████╔╝██████╔╝███████║██║██╔██╗ ██║███████╗   ██║   ██║   ██║██████╔╝██╔████╔██║
+██╔══██╗██╔══██╗██╔══██║██║██║╚██╗██║╚════██║   ██║   ██║   ██║██╔══██╗██║╚██╔╝██║
+██████╔╝██║  ██║██║  ██║██║██║ ╚████║███████║   ██║   ╚██████╔╝██║  ██║██║ ╚═╝ ██║
+╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝
+```
+
 # Brainstorm to an approved spec
 
 Most failed work isn't bad code — it's the wrong thing built confidently. This skill closes the gap between what the user said and what they meant, *before* a line is written.

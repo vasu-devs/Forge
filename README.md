@@ -1,17 +1,15 @@
 <a id="top"></a>
 
-```
+<div align="center">
+
+<pre>
 ███████╗ ██████╗ ██████╗  ██████╗ ███████╗
 ██╔════╝██╔═══██╗██╔══██╗██╔════╝ ██╔════╝
 █████╗  ██║   ██║██████╔╝██║  ███╗█████╗  
 ██╔══╝  ██║   ██║██╔══██╗██║   ██║██╔══╝  
 ██║     ╚██████╔╝██║  ██║╚██████╔╝███████╗
 ╚═╝      ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
-```
-
-<div align="center">
-
-# forge 🔨
+</pre>
 
 **A curated, state-of-the-art SDLC skill set for Claude Code — with a memory layer that learns as you work.**
 

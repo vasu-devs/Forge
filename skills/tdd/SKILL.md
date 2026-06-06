@@ -3,6 +3,15 @@ name: tdd
 description: Implement features and fix bugs test-first with a strict red-green-refactor loop. Use whenever you are about to write implementation code or fix a bug — before the production code exists.
 ---
 
+```
+████████╗██████╗ ██████╗
+╚══██╔══╝██╔══██╗██╔══██╗
+   ██║   ██║  ██║██║  ██║
+   ██║   ██║  ██║██║  ██║
+   ██║   ██████╔╝██████╔╝
+   ╚═╝   ╚═════╝ ╚═════╝
+```
+
 # Test-Driven Development
 
 The discipline that makes every other quality claim trustworthy. Skipping it feels faster and is the most expensive habit in software.

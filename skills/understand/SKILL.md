@@ -3,6 +3,15 @@ name: understand
 description: Build an accurate mental map of unfamiliar code before changing it. Use when starting work in a codebase or area you don't know well, before editing code whose ripple effects you can't predict, or when the user asks how something works or where something lives.
 ---
 
+```
+██╗   ██╗███╗   ██╗██████╗ ███████╗██████╗ ███████╗████████╗ █████╗ ███╗   ██╗██████╗
+██║   ██║████╗  ██║██╔══██╗██╔════╝██╔══██╗██╔════╝╚══██╔══╝██╔══██╗████╗  ██║██╔══██╗
+██║   ██║██╔██╗ ██║██║  ██║█████╗  ██████╔╝███████╗   ██║   ███████║██╔██╗ ██║██║  ██║
+██║   ██║██║╚██╗██║██║  ██║██╔══╝  ██╔══██╗╚════██║   ██║   ██╔══██║██║╚██╗██║██║  ██║
+╚██████╔╝██║ ╚████║██████╔╝███████╗██║  ██║███████║   ██║   ██║  ██║██║ ╚████║██████╔╝
+ ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚═════╝
+```
+
 # Understand before you touch
 
 Editing code you haven't mapped is the fastest route to breakage. Spend a little to orient first, then change with confidence. The goal is a short, accurate map in the project's *own* vocabulary — not a file dump.

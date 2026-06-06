@@ -3,6 +3,15 @@ name: recall
 description: Recall what you and the user did in PAST Claude Code sessions, and resume a specific past chat to go deeper. Use when the user references earlier work ("what did we decide about X", "have we done this before", "continue that thing from the other day"), asks what they were working on, wants to pick up an old conversation, or asks you to remember across chats.
 ---
 
+```
+██████╗ ███████╗ ██████╗ █████╗ ██╗     ██╗
+██╔══██╗██╔════╝██╔════╝██╔══██╗██║     ██║
+██████╔╝█████╗  ██║     ███████║██║     ██║
+██╔══██╗██╔══╝  ██║     ██╔══██║██║     ██║
+██║  ██║███████╗╚██████╗██║  ██║███████╗███████╗
+╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚══════╝
+```
+
 # Recall across sessions (forge memory)
 
 forge indexes your past Claude Code sessions into a **local semantic memory** under `~/.claude/forge-data/memory/`: a chat catalog + extracted memories (facts / preferences / decisions / gotchas) with embeddings, plus a personalization profile that auto-loads at the start of every session. This skill lets you search that memory and jump back into a specific past chat.

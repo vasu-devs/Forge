@@ -3,6 +3,15 @@ name: review
 description: Review code changes for correctness and quality before merging. Use after implementing a meaningful chunk or feature, between plan tasks, or before opening a PR — to catch issues while they're cheap.
 ---
 
+```
+██████╗ ███████╗██╗   ██╗██╗███████╗██╗    ██╗
+██╔══██╗██╔════╝██║   ██║██║██╔════╝██║    ██║
+██████╔╝█████╗  ██║   ██║██║█████╗  ██║ █╗ ██║
+██╔══██╗██╔══╝  ╚██╗ ██╔╝██║██╔══╝  ██║███╗██║
+██║  ██║███████╗ ╚████╔╝ ██║███████╗╚███╔███╔╝
+╚═╝  ╚═╝╚══════╝  ╚═══╝  ╚═╝╚══════╝ ╚══╝╚══╝
+```
+
 # Review on two axes, by a fresh set of eyes
 
 ## Author-bias elimination

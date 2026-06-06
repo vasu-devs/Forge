@@ -3,6 +3,15 @@ name: learn
 description: Distill durable "instincts" (trigger → action patterns) from this session into project-scoped memory that auto-loads at the start of future sessions in this repo. Use when the user asks you to learn or remember a workflow pattern, after solving something non-obvious worth not re-deriving, at the end of a productive session, or when invoked directly.
 ---
 
+```
+██╗     ███████╗ █████╗ ██████╗ ███╗   ██╗
+██║     ██╔════╝██╔══██╗██╔══██╗████╗  ██║
+██║     █████╗  ███████║██████╔╝██╔██╗ ██║
+██║     ██╔══╝  ██╔══██║██╔══██╗██║╚██╗██║
+███████╗███████╗██║  ██║██║  ██║██║ ╚████║
+╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝
+```
+
 # Learn instincts from this session
 
 forge's continuous-learning layer. It captures the *non-obvious* patterns of working in **this specific project** so future sessions start already knowing them — instead of re-discovering the same conventions, build quirks, and gotchas every time.

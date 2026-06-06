@@ -3,6 +3,15 @@ name: design-ui
 description: Build or redesign frontend UI that doesn't look templated or AI-generated. Use when creating components, pages, landing pages, or restyling existing UI — before writing CSS/markup, and before shipping any visual work.
 ---
 
+```
+██████╗ ███████╗███████╗██╗ ██████╗ ███╗   ██╗      ██╗   ██╗██╗
+██╔══██╗██╔════╝██╔════╝██║██╔════╝ ████╗  ██║      ██║   ██║██║
+██║  ██║█████╗  ███████╗██║██║  ███╗██╔██╗ ██║█████╗██║   ██║██║
+██║  ██║██╔══╝  ╚════██║██║██║   ██║██║╚██╗██║╚════╝██║   ██║██║
+██████╔╝███████╗███████║██║╚██████╔╝██║ ╚████║      ╚██████╔╝██║
+╚═════╝ ╚══════╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝       ╚═════╝ ╚═╝
+```
+
 # Design UI with taste (anti-slop)
 
 Default AI design fails because it reaches for statistical clichés. This skill replaces "looks fine" with deliberate, checkable taste. The premise: bad AI UI is *predictable*, so the fixes can be mechanical.

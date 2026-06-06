@@ -62,7 +62,7 @@ You can also run `forge:learn` manually to capture or curate on demand.
 Clone directly into your Claude Code skills directory so it loads as a namespaced plugin:
 
 ```bash
-git clone https://github.com/vasu-devs/forge ~/.claude/skills/forge
+git clone https://github.com/vasu-devs/Forge ~/.claude/skills/forge
 ```
 Then restart Claude Code (or run `/reload-plugins`). Skills appear as `forge:tdd`, `forge:debug`, etc.
 
@@ -71,7 +71,7 @@ Then restart Claude Code (or run `/reload-plugins`). Skills appear as `forge:tdd
 
 ### Alternative: marketplace
 ```
-/plugin marketplace add vasu-devs/forge
+/plugin marketplace add vasu-devs/Forge
 /plugin install forge@forge
 ```
 

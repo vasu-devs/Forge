@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="334" height="264" viewBox="0 0 334 264" role="img" aria-label="forge mascot — a cute little anvil">
+  <defs><linearGradient id="ember" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#FFD23F"/><stop offset="0.55" stop-color="#FF7A1E"/><stop offset="1" stop-color="#E1340C"/>
+  </linearGradient></defs>
+  <g font-family="'Cascadia Code','SFMono-Regular','Consolas','DejaVu Sans Mono',monospace" font-size="30" fill="url(#ember)">
+    <text x="18" y="42" xml:space="preserve">    ·  ✦  ·</text>
+    <text x="18" y="80" xml:space="preserve">   ( ◕ ‿ ◕ )</text>
+    <text x="18" y="118" xml:space="preserve">  __|       |__</text>
+    <text x="18" y="156" xml:space="preserve"> |_____________|</text>
+    <text x="18" y="194" xml:space="preserve">      |   |</text>
+    <text x="18" y="232" xml:space="preserve">     /_____\</text>
+  </g>
+</svg>

@@ -377,3 +377,9 @@ commit norms.
 forge is a **synthesis** — it re-expresses ideas and techniques from several excellent open projects in original wording; it copies none of their code or text. Full attribution and licenses are in [CREDITS.md](./CREDITS.md) (Superpowers, Matt Pocock's skills, Taste Skill, Anthropic Agent Skills, andrej-karpathy-skills, ECC — all MIT or Apache-2.0).
 
 Licensed under [MIT](./LICENSE). Not affiliated with or endorsed by Anthropic or any of the credited projects.
+
+<p align="center">
+  <img src="docs/forge-mascot.svg" alt="anvil-chan — the forge mascot" width="150">
+  <br>
+  <sub><i>anvil-chan says: write the test first.</i></sub>
+</p>

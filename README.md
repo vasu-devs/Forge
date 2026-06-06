@@ -1,3 +1,5 @@
+<a id="top"></a>
+
 ```
 ███████╗ ██████╗ ██████╗  ██████╗ ███████╗
 ██╔════╝██╔═══██╗██╔══██╗██╔════╝ ██╔════╝
@@ -7,16 +9,33 @@
 ╚═╝      ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
 ```
 
+<div align="center">
+
 # forge 🔨
 
-> **A curated, state-of-the-art SDLC skill set for Claude Code — with a memory layer that learns as you work.**
+**A curated, state-of-the-art SDLC skill set for Claude Code — with a memory layer that learns as you work.**
 
-![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-7C3AED)
-![Version](https://img.shields.io/badge/version-2.0.0-informational)
-![License: MIT](https://img.shields.io/badge/license-MIT-blue)
-![Core dependencies: zero](https://img.shields.io/badge/core%20deps-zero-brightgreen)
-![Skills: 15](https://img.shields.io/badge/skills-15-orange)
-![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-lightgrey)
+<p>
+  <img alt="Claude Code plugin" src="https://img.shields.io/badge/Claude_Code-plugin-7C3AED?style=flat-square&logo=anthropic&logoColor=white">
+  <img alt="version" src="https://img.shields.io/badge/version-2.0.0-4c1?style=flat-square">
+  <img alt="license MIT" src="https://img.shields.io/badge/license-MIT-blue?style=flat-square">
+  <img alt="core deps zero" src="https://img.shields.io/badge/core_deps-0-brightgreen?style=flat-square&logo=nodedotjs&logoColor=white">
+  <img alt="skills 15" src="https://img.shields.io/badge/skills-15-orange?style=flat-square">
+  <img alt="platform" src="https://img.shields.io/badge/platform-mac_•_linux_•_win-lightgrey?style=flat-square">
+</p>
+
+<p>
+  <a href="#install"><b>Install</b></a> ·
+  <a href="#why-forge">Why</a> ·
+  <a href="#the-15-skills">Skills</a> ·
+  <a href="#the-memory-layer">Memory</a> ·
+  <a href="#cross-session-recall--personalization-opt-in">Recall</a> ·
+  <a href="#configuration">Config</a> ·
+  <a href="#-what-the-hooks-actually-do">Hooks</a> ·
+  <a href="#faq">FAQ</a>
+</p>
+
+</div>
 
 Most people accumulate a dozen overlapping Claude Code skill packs and then have to remember which to invoke. **forge replaces that pile with one cohesive plugin** — the single best technique for each phase of software work (credited in [CREDITS.md](./CREDITS.md)), wired into one lifecycle, plus a memory layer so your agent stops repeating mistakes.
 
@@ -24,6 +43,22 @@ Most people accumulate a dozen overlapping Claude Code skill packs and then have
 understand → brainstorm → architect → plan → tdd ⇄ debug → review → verify → ship
                        ( + orchestrate · eval · design-ui · principles · learn · recall )
 ```
+
+> [!IMPORTANT]
+> forge ships **hooks** that write a local activity log and run **background `claude -p` calls on your own subscription** to learn from your sessions. It's all local, fully disclosed in [What the hooks actually do](#-what-the-hooks-actually-do), and disabled with one setting (`FORGE_AUTOLEARN=off`).
+
+---
+
+## Who it's for
+
+forge is for you if:
+
+- **You juggle several skill packs** and forget which to invoke → forge is *one* namespaced set with a clear hand-off chain.
+- **You want discipline enforced, not suggested** → test-first, root-cause-first, and evidence-before-"done" as *falsifiable rules*.
+- **You want your agent to stop repeating mistakes** → a memory layer that learns per-project *and* cross-project.
+- **You care about privacy** → everything local, every hook disclosed, one-switch off.
+
+Not a fit if you need a zero-hook plugin that never touches your tokens — forge's learning loop makes background model calls (off by a single setting).
 
 ---
 
@@ -49,29 +84,6 @@ claude plugin list        # look for:  forge@skills-dir   (or  forge@forge)
 ```
 
 Skills now appear as `forge:tdd`, `forge:debug`, `forge:design-ui`, etc. The data store (`~/.claude/forge-data/`) is created lazily on first use; the optional [recall add-on](#cross-session-recall--personalization-opt-in) needs one extra `npm install`.
-
-> [!IMPORTANT]
-> forge ships **hooks** that write a local activity log and run **background `claude -p` calls on your own subscription** to learn from your sessions. It's all local, fully disclosed in [What the hooks actually do](#-what-the-hooks-actually-do), and disabled with one setting (`FORGE_AUTOLEARN=off`).
-
----
-
-## Table of contents
-
-- [Why forge](#why-forge)
-- [See it in action](#see-it-in-action)
-- [Requirements](#requirements)
-- [Using forge day to day](#using-forge-day-to-day)
-- [The 15 skills](#the-15-skills)
-- [The memory layer](#the-memory-layer)
-- [Cross-session recall (opt-in)](#cross-session-recall--personalization-opt-in)
-- [Command reference](#command-reference)
-- [Configuration](#configuration)
-- [What the hooks actually do](#-what-the-hooks-actually-do)
-- [Privacy & security](#privacy--security)
-- [Architecture](#architecture)
-- [Updating & uninstalling](#updating--uninstalling)
-- [FAQ](#faq)
-- [Contributing & license](#contributing--license)
 
 ---
 
@@ -163,6 +175,11 @@ flowchart TD
 
 ## The 15 skills
 
+<details open>
+<summary><b>📋 All 15 skills</b> — the mechanism each one enforces (click to collapse)</summary>
+
+<br>
+
 | Skill | Phase | Key mechanism it enforces |
 |---|---|---|
 | **`forge:principles`** | doctrine | Think before coding · simplicity first · surgical changes · goal-driven execution · evidence over assertion. Each ships a falsifiable *test*. |
@@ -180,6 +197,10 @@ flowchart TD
 | **`forge:design-ui`** | frontend | Anti-slop UI. Tunable dials; mechanically-checkable bans; commit to one direction; render-and-look before shipping. |
 | **`forge:learn`** | memory | Distill durable lessons into project instincts + anonymized global lessons. Runs automatically; also invokable. |
 | **`forge:recall`** | memory (x-session) | Semantic search of PAST sessions + **resume a chat** (`claude --resume <id>`); local embeddings + a personalization profile. Opt-in. |
+
+</details>
+
+<div align="right"><sub><a href="#top">↑ back to top</a></sub></div>
 
 ---
 
@@ -201,7 +222,10 @@ flowchart LR
 2. **Learn** (`Stop` → detached `distill.js`) — after `FORGE_LEARN_EVERY` (default 8) actions, a small model extracts candidate lessons, which pass a strict quality gate before being stored. Non-blocking; silently no-ops on error.
 3. **Recall** (`SessionStart`) — the highest-confidence lessons (+ profile, if installed) are injected into the next session, capped and confidence-sorted.
 
-The gate is a strict funnel — a candidate must clear every check or it's dropped:
+<details>
+<summary><b>🔬 The quality gate</b> — the funnel every candidate lesson must clear (click to expand)</summary>
+
+<br>
 
 ```mermaid
 flowchart TD
@@ -219,6 +243,8 @@ flowchart TD
   cap -->|yes| dedupe["dedupe, keep highest confidence"] --> save[("store")]
 ```
 
+</details>
+
 **Two tiers:** *project instincts* (`instincts/<project>.jsonl`, load only in that repo) and *global lessons* (`global-lessons.jsonl` + readable `LESSONS.md`, anonymized, load everywhere). Both store one tiny JSON object per line:
 
 ```json
@@ -226,6 +252,8 @@ flowchart TD
   "action":  "investigate the root cause first (race, shared state) before adding any wait",
   "confidence": 0.85 }
 ```
+
+<div align="right"><sub><a href="#top">↑ back to top</a></sub></div>
 
 ---
 
@@ -272,6 +300,11 @@ Set under `"env"` in `~/.claude/settings.json`:
 { "env": { "FORGE_LEARN_MODEL": "claude-sonnet-4-6", "FORGE_LEARN_EVERY": "12" } }
 ```
 
+<details>
+<summary><b>⚙️ All configuration options</b> (click to expand)</summary>
+
+<br>
+
 | Variable | Default | Effect |
 |---|---|---|
 | `FORGE_AUTOLEARN` | `on` | `off` disables the background distiller entirely (skills still work). |
@@ -285,7 +318,11 @@ Set under `"env"` in `~/.claude/settings.json`:
 | `FORGE_EMBED_MODEL` | `Xenova/all-MiniLM-L6-v2` | *(add-on)* local embedding model. |
 | `FORGE_PROFILE_EVERY` | `3` | *(add-on)* rebuild the profile every N indexed sessions. |
 
+</details>
+
 *Cost:* the distiller runs on your own plan. To keep it lean, raise `FORGE_LEARN_EVERY` and/or keep Haiku. `FORGE_DISTILL_DRYRUN` / `FORGE_DISTILL_MOCK` exercise the pipeline without spending tokens (see [CONTRIBUTING.md](./CONTRIBUTING.md)).
+
+<div align="right"><sub><a href="#top">↑ back to top</a></sub></div>
 
 ---
 
@@ -336,6 +373,11 @@ flowchart TB
   s4 -. "claude -p" .-> api["Claude"]
 ```
 
+<details>
+<summary><b>🗂️ Repository layout</b> (click to expand)</summary>
+
+<br>
+
 ```
 forge/
 ├── .claude-plugin/{plugin,marketplace}.json   # manifests
@@ -350,7 +392,11 @@ forge/
 └── skills/<name>/SKILL.md                     # the 15 skills
 ```
 
+</details>
+
 Three design choices worth knowing: **deterministic scaffolding is separated from model judgment** (scripts do plumbing; the code gate vets the model's output); **project keys are path-normalized** (`/c/Users/…` ↔ `C:\Users\…`) so hooks and CLI always agree; and everything is **recursion-safe and fail-open** (the distiller can't trigger itself, and any hook error degrades to "no learning this turn", never a blocked tool call).
+
+<div align="right"><sub><a href="#top">↑ back to top</a></sub></div>
 
 ---
 
@@ -383,3 +429,5 @@ rm -rf ~/.claude/skills/forge           # uninstall (data in ~/.claude/forge-dat
 Contributions welcome — sharper mechanisms, bug/cross-platform fixes, and well-scoped new skills that earn their place. forge is a *curated* synthesis, so the bar is "is this the best version of this idea?" **Open an issue before a large PR.** Conventions are in [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 forge re-expresses ideas from several excellent open projects in original wording and copies none of their code or text — full attribution in [CREDITS.md](./CREDITS.md) (Superpowers, Matt Pocock, Taste Skill, Anthropic Agent Skills, andrej-karpathy-skills, ECC). Licensed under [MIT](./LICENSE). Not affiliated with or endorsed by Anthropic.
+
+<div align="center"><sub>Built with 🔨 by <a href="https://github.com/vasu-devs">vasu-devs</a> · <a href="#top">back to top</a></sub></div>

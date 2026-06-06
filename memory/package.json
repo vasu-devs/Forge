@@ -5,7 +5,6 @@
   "version": "1.0.0",
   "description": "forge memory subsystem — local semantic memory + chat catalog + personalization profile for Claude Code. Optional: run `npm install` here to enable forge:recall.",
   "dependencies": {
-    "@huggingface/transformers": "^3.0.0",
-    "justhireme": "file:E:/STUDY/Projects/JustHireMe"
+    "@huggingface/transformers": "^3.0.0"
   }
 }

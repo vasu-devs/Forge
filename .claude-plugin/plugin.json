@@ -1,0 +1,6 @@
+{
+  "name": "forge",
+  "version": "1.1.0",
+  "description": "SOTA software-development-lifecycle skill set — a curated synthesis of the best, most distinctive mechanisms from Superpowers, Matt Pocock, Taste Skill, Karpathy, Anthropic's official skills, and ECC. One cohesive group, no juggling: principles → understand → brainstorm → architect → plan → tdd → debug → review → verify → ship, with orchestrate (parallel-agent dispatch), eval (pass@k harness for LLM/agent work), design-ui (anti-slop frontend), and a continuous-learning instinct layer (forge:learn + hooks).",
+  "author": { "name": "Vasu", "email": "vasu@agentroster.io" }
+}

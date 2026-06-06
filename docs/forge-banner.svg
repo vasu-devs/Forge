@@ -1,56 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 340" role="img" aria-label="forge — the SDLC skill set that learns as you work">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 440" role="img" aria-label="forge — the SDLC skill set that learns as you work">
   <defs>
-    <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#FCF8F1"/>
-      <stop offset="1" stop-color="#C6BEB1"/>
+    <linearGradient id="ember" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFD08A"/>
+      <stop offset="0.55" stop-color="#FF9A3D"/>
+      <stop offset="1" stop-color="#F2701C"/>
     </linearGradient>
-    <radialGradient id="heat" cx="0.16" cy="0.52" r="0.62">
-      <stop offset="0" stop-color="#FF7A1A" stop-opacity="0.42"/>
+    <radialGradient id="heat" cx="0.12" cy="0.2" r="0.7">
+      <stop offset="0" stop-color="#FF7A1A" stop-opacity="0.20"/>
       <stop offset="1" stop-color="#FF7A1A" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="ember" cx="0.5" cy="0.4" r="0.6">
-      <stop offset="0" stop-color="#FFE2B0"/>
-      <stop offset="0.45" stop-color="#FF9A3D"/>
-      <stop offset="1" stop-color="#E8551F"/>
     </radialGradient>
   </defs>
 
-  <!-- iron background + forge heat glow + subtle frame -->
-  <rect x="0" y="0" width="1100" height="340" rx="26" fill="#15120E"/>
-  <rect x="0" y="0" width="1100" height="340" rx="26" fill="url(#heat)"/>
-  <rect x="1" y="1" width="1098" height="338" rx="25" fill="none" stroke="#2D2820" stroke-width="1.5"/>
+  <!-- terminal window -->
+  <rect x="0" y="0" width="1100" height="440" rx="16" fill="#0E0D0C"/>
+  <rect x="0" y="0" width="1100" height="440" rx="16" fill="url(#heat)"/>
+  <rect x="0.75" y="0.75" width="1098.5" height="438.5" rx="15.25" fill="none" stroke="#2A2620" stroke-width="1.5"/>
 
-  <!-- spark mark -->
-  <g stroke="#FF9A3D" stroke-width="6" stroke-linecap="round">
-    <line x1="150" y1="170" x2="150" y2="114"/>
-    <line x1="150" y1="170" x2="198" y2="138"/>
-    <line x1="150" y1="170" x2="212" y2="172"/>
-    <line x1="150" y1="170" x2="190" y2="214"/>
-    <line x1="150" y1="170" x2="150" y2="228"/>
-    <line x1="150" y1="170" x2="106" y2="140"/>
-    <line x1="150" y1="170" x2="112" y2="208"/>
+  <!-- title bar -->
+  <circle cx="34" cy="26" r="7" fill="#FF5F56"/>
+  <circle cx="60" cy="26" r="7" fill="#FFBD2E"/>
+  <circle cx="86" cy="26" r="7" fill="#27C93F"/>
+  <text x="550" y="31" text-anchor="middle" font-family="'Cascadia Code','SFMono-Regular',Consolas,'DejaVu Sans Mono',monospace" font-size="17" fill="#6E655A">forge · ~/.claude/skills/forge</text>
+  <line x1="0" y1="52" x2="1100" y2="52" stroke="#221E18" stroke-width="1.5"/>
+
+  <!-- ASCII art (ANSI Shadow), molten amber -->
+  <g font-family="'Cascadia Code','SFMono-Regular',Consolas,'DejaVu Sans Mono',monospace" font-size="36" fill="url(#ember)" xml:space="preserve">
+    <text x="70" y="128">███████╗ ██████╗ ██████╗  ██████╗ ███████╗</text>
+    <text x="70" y="168">██╔════╝██╔═══██╗██╔══██╗██╔════╝ ██╔════╝</text>
+    <text x="70" y="208">█████╗  ██║   ██║██████╔╝██║  ███╗█████╗  </text>
+    <text x="70" y="248">██╔══╝  ██║   ██║██╔══██╗██║   ██║██╔══╝  </text>
+    <text x="70" y="288">██║     ╚██████╔╝██║  ██║╚██████╔╝███████╗</text>
+    <text x="70" y="328">╚═╝      ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝</text>
   </g>
-  <circle cx="150" cy="170" r="15" fill="url(#ember)"/>
 
-  <!-- wordmark -->
-  <text x="232" y="208" font-family="'Helvetica Neue', 'Arial Black', Arial, sans-serif" font-weight="800" font-size="150" letter-spacing="-7" fill="url(#steel)">forge</text>
-
-  <!-- molten underline with a glowing strike-point -->
-  <rect x="236" y="232" width="392" height="7" rx="3.5" fill="#EE7A2E"/>
-  <circle cx="636" cy="235.5" r="8.5" fill="url(#ember)"/>
-
-  <!-- tagline (mono, no em-dash) -->
-  <text x="238" y="286" font-family="'SFMono-Regular', Consolas, 'Liberation Mono', monospace" font-size="26" letter-spacing="0.5" fill="#A99B88">// the SDLC skill set that learns as you work</text>
-
-  <!-- drifting embers to balance the right -->
-  <g fill="url(#ember)">
-    <circle cx="948" cy="150" r="6"/>
-    <circle cx="992" cy="120" r="4"/>
-    <circle cx="912" cy="116" r="3.5"/>
-    <circle cx="972" cy="188" r="3"/>
-  </g>
-  <g stroke="#FF9A3D" stroke-width="3" stroke-linecap="round" opacity="0.7">
-    <line x1="948" y1="150" x2="948" y2="132"/>
-    <line x1="992" y1="120" x2="992" y2="107"/>
-  </g>
+  <!-- prompt + output -->
+  <text x="70" y="378" font-family="'Cascadia Code','SFMono-Regular',Consolas,'DejaVu Sans Mono',monospace" font-size="22" xml:space="preserve"><tspan fill="#27C93F">$</tspan><tspan fill="#C9C1B5"> forge build</tspan></text>
+  <text x="70" y="408" font-family="'Cascadia Code','SFMono-Regular',Consolas,'DejaVu Sans Mono',monospace" font-size="22" xml:space="preserve"><tspan fill="#FF9A3D">✦ </tspan><tspan fill="#9C907E">14 skills loaded · the SDLC skill set that learns as you work </tspan><tspan fill="#FF9A3D">▮</tspan></text>
 </svg>

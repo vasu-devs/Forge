@@ -19,6 +19,7 @@ function addOne(o) {
     evidence: o.evidence ? String(o.evidence) : '',
     ts: new Date().toISOString()
   };
+  if (!L.lessonPasses(rec)) { console.error('skip: too short or a platitude — make it specific:', rec.trigger); return; }
   const f = L.instinctsFile(); L.ensureDir(f);
   fs.appendFileSync(f, JSON.stringify(rec) + '\n');
   console.log('added: when', rec.trigger, '->', rec.action, '(conf', rec.confidence + ')');
@@ -64,6 +65,7 @@ function addGlobalOne(o) {
     confidence: (o.confidence != null ? Number(o.confidence) : 0.6),
     evidence: o.evidence ? String(o.evidence) : '', ts: new Date().toISOString()
   };
+  if (!L.lessonPasses(rec, { global: true })) { console.error('skip: a global lesson must be specific, non-platitude, and anonymized (no path/file/version/pkg):', rec.trigger); return; }
   const f = L.globalFile(); L.ensureDir(f);
   fs.appendFileSync(f, JSON.stringify(rec) + '\n');
   console.log('added global: when', rec.trigger, '->', rec.action, '(conf', rec.confidence + ')');

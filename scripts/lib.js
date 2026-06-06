@@ -42,6 +42,31 @@ function dedupeInstincts(items) {
   return [...m.values()].sort((a, b) => (Number(b.confidence) || 0) - (Number(a.confidence) || 0));
 }
 
+// --- Shared quality gate (used by BOTH the auto-distiller and the manual forge-store CLI,
+// so the hand-add path can't bypass the rules the forge:learn skill advertises) ---
+const PLATITUDE = /\b(write clean code|clean code|follow best practices|best practices|be careful|do your best|use good|write good|make sure to test|test thoroughly|be thorough|pay attention|keep it simple|don'?t overcomplicate)\b/i;
+function isPlatitude(s) { return PLATITUDE.test(String(s || '')); }
+// Best-effort backstop for GLOBAL lessons: reject obvious project/identifier leakage
+// (path, source filename, version token, scoped package). NOT a guarantee — the author
+// still owns anonymization; this just catches the easy misses.
+function looksIdentifying(s) {
+  s = String(s || '');
+  return /[\\/]/.test(s)
+    || /\.(ts|tsx|js|jsx|mjs|cjs|py|rs|go|java|rb|php|cs|kt|swift|vue|svelte|sql|sh)\b/i.test(s)
+    || /\b\d+\.\d+/.test(s)
+    || /@[a-z0-9-]+\/[a-z0-9-]+/i.test(s);
+}
+// A lesson clears the gate if it's substantive (not one-word) and not a platitude;
+// global lessons additionally must not look identifying.
+function lessonPasses(o, { global = false, minConf = 0 } = {}) {
+  if (!o || typeof o.trigger !== 'string' || typeof o.action !== 'string') return false;
+  if ((Number(o.confidence) || 0) < minConf) return false;
+  if (o.trigger.trim().length < 8 || o.action.trim().length < 12) return false;
+  if (isPlatitude(o.trigger) || isPlatitude(o.action)) return false;
+  if (global && (looksIdentifying(o.trigger) || looksIdentifying(o.action))) return false;
+  return true;
+}
+
 // --- Global lessons (cross-project, anonymized) ---
 function globalFile() { return path.join(BASE, 'global-lessons.jsonl'); }
 function globalMdFile() { return path.join(BASE, 'LESSONS.md'); }
@@ -81,5 +106,6 @@ function appendRecord(f, o) {
 module.exports = {
   BASE, projId, instinctsFile, obsFile, globalFile, globalMdFile, renderGlobalMd,
   stateFile, readJson, writeJson, countLines, appendRecord,
-  ensureDir, readJsonl, dedupeInstincts
+  ensureDir, readJsonl, dedupeInstincts,
+  isPlatitude, looksIdentifying, lessonPasses
 };

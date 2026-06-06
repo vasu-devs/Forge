@@ -33,6 +33,7 @@ Never ship the first design. Generate **2-3 genuinely different** designs, each 
 - maximize flexibility
 - optimize the common case
 - imitate a known, well-understood paradigm
+- survive failure well (idempotency, partial-failure, retries, backpressure)
 
 If subagents are available, dispatch them in parallel — one design each — so the options don't converge. Then compare.
 
@@ -41,11 +42,12 @@ If subagents are available, dispatch them in parallel — one design each — so
 - A **deep** interface is small but hides significant complexity (good). A **shallow** one is a large surface over a thin implementation (bad — it just relocates complexity onto callers).
 - Optimize for **ease of correct use** and **hardness of misuse**.
 - Do **not** rank designs by how much code they take to implement — that's the cheapest part and the wrong axis.
+- **Record the decision, including the losers.** Output a short comparison (each design × how it scores on the constraints / its key failure mode) and one sentence per rejected design saying exactly why it lost. A design chosen with no written loser isn't a decision — it's the first thing that compiled.
 
 ## 4. Earn every abstraction
 
 - **Deletion test:** imagine deleting this module. If the same complexity reappears, duplicated across N callers, the module earned its place. If not, you're abstracting for its own sake — don't.
-- **Two-adapter rule:** one adapter is a *hypothetical* seam; two real adapters prove a seam exists. Don't introduce an interface for a single implementation "in case." (This is `forge:principles` #2 applied to structure.)
+- **Two-adapter rule:** one adapter is a *hypothetical* seam; two real adapters prove a seam exists. Don't introduce an interface for a single implementation "in case." (This is `forge:principles` #2 applied to structure.) **Exception:** a test double or an external-boundary port (network, clock, third-party API, persistence you'll mock in tests) *is* the second adapter — seam it.
 
 ## 5. Name and record
 

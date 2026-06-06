@@ -19,21 +19,27 @@ The discipline that makes every other quality claim trustworthy. Skipping it fee
 ## The Iron Law
 **No production code without a failing test first.**
 
-If you already wrote production code before its test: **delete it.** Not comment it out, not keep it as "reference," not glance at it while writing the test — delete it, then re-derive it test-first.
+If *you* wrote production code this session before its test and it isn't committed yet: **delete it.** Not comment it out, not keep it as "reference," not glance at it while writing the test — delete it, then re-derive it test-first.
+
+This applies to **your own uncommitted work**, never the repo's existing code. To put *pre-existing, untested* code under test, do **not** delete it — first write a **characterization test** that pins its current observable behavior (even behavior you suspect is wrong), get it green, and only then change it.
 
 Why this is non-negotiable: tests written *after* code ask "what does this code do?" and tend to enshrine whatever you happened to write, bugs included. Tests written *first* ask "what *should* this do?" — the only question that catches the gap.
 
+**For a bug, the law is identical:** the first RED is a test that *reproduces the bug* and fails for the bug's reason; GREEN is the fix. No fix before that test exists (use `forge:debug` to find the cause if it isn't obvious).
+
 ## Watch it fail
-After writing the test, **run it and watch it fail** before implementing. If you didn't see RED, you don't know the test actually exercises the behavior — a test that passes against no implementation is testing nothing.
+After writing the test, **run it and watch it fail** before implementing. If you didn't see RED, you don't know the test actually exercises the behavior — a test that passes against no implementation is testing nothing. Confirm it fails **on the assertion you intended**, with the expected-vs-actual you predicted — not on an import error, typo, or fixture/collection error. A test that fails for the wrong reason hasn't been watched fail.
 
 ## One slice at a time (no horizontal batching)
 One failing test → the minimum implementation to make it pass → repeat. Do **not** write all the tests and then all the code. Bulk-writing tests verifies *imagined* behavior and tends to test the *shape* of the code rather than what it does. Tracer bullets, not layers.
 
 ## Refactor only on green
-Never refactor while a test is RED — you won't know whether the refactor or the unfinished feature broke it. Get to GREEN, then improve with the safety net in place.
+Never refactor while a test is RED — you won't know whether the refactor or the unfinished feature broke it. Get to GREEN, then improve with the safety net in place. During a refactor you may **not** change a test assertion or add new behavior; the tests stay green and unchanged. If a test has to change, you're not refactoring — go back to RED.
 
 ## Test behavior, not internals
 Assert observable, external behavior. Renaming a private function, splitting a class, or reorganizing internals should **not** break a test. If it does, that test was coupled to structure and was wrong.
+
+**Mock only at trust boundaries** — network, clock, filesystem, external services. Asserting that a mock *was called N times* is testing internals (forbidden) unless that call **is** the observable behavior. Prefer real collaborators over mocks for in-process code.
 
 ## Forbidden rationalizations (and the honest rebuttal)
 | You'll think… | The truth |

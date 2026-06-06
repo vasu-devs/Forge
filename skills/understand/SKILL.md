@@ -19,14 +19,15 @@ Editing code you haven't mapped is the fastest route to breakage. Spend a little
 ## 1. Pick the cheapest accurate lens
 
 - **If CodeGraph MCP tools are available** (`codegraph_explore`, `codegraph_search`, `codegraph_callers`, `codegraph_impact` — present when `/codegraph-here` has been activated for this repo): prefer `codegraph_explore` for "how does X work / how does X reach Y" and `codegraph_impact` before changing a symbol. One call replaces many grep/read round-trips and follows dynamic-dispatch hops grep can't.
-- **Otherwise**: Grep/Glob for entry points and definitions, then Read only the files on the relevant path. Don't read the whole tree.
+- **Otherwise**: Grep/Glob for entry points and definitions, then Read only the files on the relevant path. Don't read the whole tree. To gauge **blast radius without CodeGraph**, grep the symbol's *definition name* across the repo to enumerate its call sites — the symbols with the most references are your hotspots.
+- **Read the tests and the types/interfaces first.** A module's tests state its contract (and the repo's vocabulary) more densely than its implementation; type/interface signatures map the shape faster than reading call sites. Start there, then drop into bodies only as needed.
 
 ## 2. Iterative retrieval — learn the repo's words
 
 The codebase rarely uses your words. Search by the obvious term; if it comes back empty, that's a signal, not a dead end:
 1. Search the concept ("rate limit").
 2. Empty? Find what *this* repo calls it (skim a nearby module, a config, a test) — maybe it's "throttle" or "quota".
-3. Re-search with the repo's term. Repeat up to ~3 cycles.
+3. Re-search with the repo's term. Repeat up to ~3 cycles. After 3 empty cycles, **stop and ask the user for the in-repo term** (or state plainly that the concept may not exist here) — don't keep guessing.
 
 Adopt the repo's vocabulary in everything you write afterward — it makes your map, plans, and PRs legible to the team.
 
@@ -37,6 +38,8 @@ Before editing, state a compact map:
 - **Key modules** — the 3-6 that matter, one line each, in the project's vocabulary.
 - **The path** — the call/data flow relevant to the task (A → B → C).
 - **Hotspots** — the most complex / highest-fan-in pieces you'll be near (handle with extra care).
+
+**Validate the map before trusting it:** trace one concrete execution end-to-end (a real entry point → the site you'll change) and confirm each hop actually exists in the code. An untraced map is a guess.
 
 If you're lost, **zoom out one layer**: ask for a map of the relevant modules and their callers rather than diving deeper into one file.
 

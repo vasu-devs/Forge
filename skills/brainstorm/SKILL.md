@@ -28,7 +28,9 @@ Most failed work isn't bad code — it's the wrong thing built confidently. This
 
 Do **not** write implementation code, edit files, or jump to a plan until the user has approved a written spec. This gate is the whole point — it's the cheapest place to be wrong. When you think "this is simple enough to just build," that's exactly when a 2-minute spec saves an hour.
 
-Present the spec in **digestible sections** (problem, scope, approach, what's explicitly out of scope, success criteria) and get sign-off section by section, not as one giant block.
+Present the spec in **digestible sections** — problem, scope, approach, **risks & assumptions** (a 30-second pre-mortem: "assume this shipped and failed; top 2-3 reasons"), what's explicitly out of scope, and success criteria — and get sign-off section by section, not as one giant block.
+
+**"Approved" is mechanical, not inferred.** Approval = the user affirmatively says yes to the section you explicitly presented. Silence, an "ok" aimed at something else, a fresh question, or a topic change is **not** approval — if unsure, ask "Approve this section?" verbatim and wait. Assuming consent from a non-answer is the rationalization this gate exists to forbid.
 
 ## Capture decisions as you go (don't batch)
 
@@ -37,4 +39,4 @@ Present the spec in **digestible sections** (problem, scope, approach, what's ex
 - Durable artifacts contain **no file paths or line numbers** — they rot. Describe behavior, not locations.
 
 ## Exit
-When the spec is approved, hand off to `forge:plan` — not directly to coding. Brainstorm decides *what* and *why*; plan decides *the steps*.
+**Write the approved spec to a file** (e.g. `docs/specs/<feature>.md`, or as the header of the plan) so `forge:plan` consumes an artifact, not scrollback — durable facts belong in files, not fragile conversation memory. Then hand off to `forge:plan`, not directly to coding. Brainstorm decides *what* and *why*; plan decides *the steps*.

@@ -3,7 +3,7 @@
 // Background distiller (spawned by stop-autolearn.js). Reads the session transcript,
 // asks a small model (Haiku) to extract ONLY high-quality lessons, runs a strict
 // code-side quality gate, and appends survivors to the project + global stores.
-// Runs with --bare so the child loads no plugins/hooks (no recursion). Never throws.
+// Recursion is prevented by the FORGE_DISTILLER=1 env guard (NOT --bare, which breaks auth). Never throws.
 const fs = require('fs');
 const path = require('path');
 const L = require('./lib.js');
@@ -72,16 +72,8 @@ function extractJson(s) {
   try { return JSON.parse(m[0]); } catch { return null; }
 }
 
-// --- the quality gate ---
-const PLATITUDE = /\b(write clean code|clean code|follow best practices|best practices|be careful|do your best|use good|write good|make sure to test|test thoroughly|be thorough|pay attention|keep it simple|don'?t overcomplicate)\b/i;
-function looksIdentifying(s) { return /[\\/]/.test(s) || /\.(ts|tsx|js|jsx|mjs|py|rs|go|java|rb|php|cs|kt|swift|vue|svelte)\b/i.test(s); }
-function valid(o, minConf) {
-  if (!o || typeof o.trigger !== 'string' || typeof o.action !== 'string') return false;
-  if ((Number(o.confidence) || 0) < minConf) return false;
-  if (o.trigger.trim().length < 8 || o.action.trim().length < 12) return false;
-  if (PLATITUDE.test(o.trigger) || PLATITUDE.test(o.action)) return false;
-  return true;
-}
+// --- the quality gate (shared with forge-store via lib.js: confidence floor, length,
+// platitude filter, and — for global lessons — an anonymization backstop) ---
 
 function main() {
   const transcript = process.argv[2];
@@ -94,9 +86,8 @@ function main() {
   const parsed = extractJson(callModel(buildPrompt(convo)));
   if (!parsed) { log('no parseable lessons JSON'); return; }
 
-  const proj = (Array.isArray(parsed.project) ? parsed.project : []).filter(o => valid(o, minConf)).slice(0, 4);
-  const glob = (Array.isArray(parsed.global) ? parsed.global : [])
-    .filter(o => valid(o, minConf) && !looksIdentifying(o.trigger) && !looksIdentifying(o.action)).slice(0, 3);
+  const proj = (Array.isArray(parsed.project) ? parsed.project : []).filter(o => L.lessonPasses(o, { minConf })).slice(0, 4);
+  const glob = (Array.isArray(parsed.global) ? parsed.global : []).filter(o => L.lessonPasses(o, { global: true, minConf })).slice(0, 3);
 
   for (const o of proj) L.appendRecord(L.instinctsFile(cwd), o);
   if (glob.length) { for (const o of glob) L.appendRecord(L.globalFile(), o); L.renderGlobalMd(); }

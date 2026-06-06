@@ -136,7 +136,13 @@ async function chats() {
   if (!cs.length) { console.log('(no chats indexed yet — run: forge-mem index)'); return; }
   const k = parseInt(opt('-k', '5'), 10);
   const qv = await L.embed(q);
-  const scored = cs.map(c => ({ c, rel: (L.cosine(c.embedding || [], qv) + 1) / 2 })).sort((a, b) => b.rel - a.rel).slice(0, k);
+  const now = Date.now();
+  const scored = cs.map(c => {
+    const rel = (L.cosine(c.embedding || [], qv) + 1) / 2;
+    const ageDays = Math.max(0, (now - Date.parse(c.date || 0)) / 86400000);
+    const recency = 1 / (1 + ageDays / 30);            // ~0.5 at 30 days old — a nudge, not a takeover
+    return { c, rel, score: 0.8 * rel + 0.2 * recency };
+  }).sort((a, b) => b.score - a.score).slice(0, k);
   console.log(`\n📂 past chats matching: "${q}"\n`);
   for (const s of scored) {
     const c = s.c;

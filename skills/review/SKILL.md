@@ -15,25 +15,26 @@ description: Review code changes for correctness and quality before merging. Use
 # Review on two axes, by a fresh set of eyes
 
 ## Author-bias elimination
-The reviewer must **not** be the author. A self-review shares the exact blind spots that produced the bug. Dispatch a **fresh subagent** with *crafted context* — the diff plus the originating spec/issue — **not** your session history. The reviewer should reach its verdict without your reasoning leaking in.
+The reviewer must **not** be the author. A self-review shares the exact blind spots that produced the bug. Dispatch a **fresh subagent** with *crafted context* — the diff plus the originating spec/issue — **not** your session history. The reviewer should reach its verdict without your reasoning leaking in. If you can't spawn a subagent, simulate the reset: review strictly from the diff + spec, deliberately setting aside your implementation reasoning.
 
-## Two independent axes
-Run two reviews that don't pollute each other (ideally as **parallel** subagents that never see each other's findings), then present them **side by side without merging or reranking**:
+## Independent axes
+Run these reviews so they don't pollute each other (ideally as **parallel** subagents that never see each other's findings), then present them **side by side without merging or reranking**:
 
 - **Spec** — does the change do what was actually asked? Right behavior, all the acceptance criteria, nothing missing or scope-crept.
-- **Standards** — does it follow this repo's conventions and quality bar? Naming, structure, error handling, tests, security.
+- **Correctness** — is the code *actually right*, independent of the spec? Edge cases, boundary/off-by-one, error and failure paths, null/empty, concurrency and races, resource leaks, injection. (Code can satisfy the spec and follow every convention and still be wrong — this axis is the "correctness" the skill's name promises.)
+- **Standards** — does it follow this repo's conventions and quality bar? Naming, structure, tests, idioms.
 
-Keep them separate because code routinely passes one and fails the other: it can follow every convention while building the wrong thing, or build exactly the right thing while violating the codebase's patterns. A merged review lets one mask the other.
+Keep them separate because a change routinely passes one and fails another. A merged review lets one mask the others.
 
-Tell the Standards reviewer to **skip anything tooling already enforces** (formatting, lint) and spend its attention on judgment calls.
+First **run the repo's own lint / typecheck / test commands and confirm they're green**; then the Standards reviewer can skip what tooling already enforces (formatting, lint) and spend its attention on judgment calls. Never skip a check you didn't actually run.
 
 ## Adversarial framing
-Assume there *are* problems and go find them. "I found zero issues" almost always means you weren't looking hard enough — look harder before concluding clean.
+Assume there *are* problems and go find them. "I found zero issues" almost always means you weren't looking hard enough. A **clean verdict is only valid if** you inspected every changed hunk and can name the single riskiest line you considered and why it's actually safe.
 
 ## Severity tiers → action
-- **Critical** — correctness/security/data-loss. Block. Fix before anything else.
-- **Important** — real problems that should be fixed before proceeding.
-- **Minor** — note them; don't gate on them.
+- **Critical** — security hole, data loss, crash, incorrect output, or a regression. Block; fix before anything else.
+- **Important** — missing test for new logic, an unhandled error path, or a performance cliff. Fix before proceeding.
+- **Minor** — style not enforced by tooling, naming. Note them; don't gate.
 
 ## Receiving the findings (when feedback comes to you)
 - Evaluate each point **technically**. Don't perform agreement ("Great catch!") — just assess and act.

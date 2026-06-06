@@ -22,16 +22,20 @@ Dispatch parallel agents **only when the tasks are truly independent** — solvi
 ## Crafted context, never session history
 Each agent gets a **purpose-built prompt**: the specific task plus exactly the context it needs — not your conversation history. Shape and constrain it ("find the real root cause; do not just bump the timeout"). A vague hand-off produces vague work; the prompt is the product.
 
+Require a **structured return** from each agent so synthesis is mechanical: `{ files changed, tests added, verification command + its result, open questions }`. Dispatch via the Task tool, one agent per worktree.
+
 ## Isolation when agents write
 - **Read-only fan-out** (exploration, review, analysis): no isolation needed.
-- **Agents that mutate files concurrently:** give each its **own git worktree** (see `forge:ship` / native worktree tooling) so they can't clobber each other. Merge afterward in dependency order.
+- **Agents that mutate files concurrently:** give each its **own git worktree** (native worktree tooling) so they can't clobber each other. Since the tasks are independent there's no dependency order — **merge sequentially and re-run the tests after each merge** to catch textual or semantic conflicts even between logically independent changes.
 
 ## Per-task review (author-bias elimination)
 After each agent finishes, a **fresh reviewer that did not do the work** checks it — spec-compliance first, then code quality (`forge:review`). A self-review shares the blind spots that produced the bug.
 
 ## Execution discipline
 - **Continuous execution:** don't stop to ask "should I keep going?" between independent tasks — run them through. Stop only on a real blocker, and then ask rather than guess.
-- **Model-tier by task:** a cheap/fast model for mechanical 1-2 file changes; a capable model for design, ambiguity, and review.
+- **Model-tier by a decidable rule:** if the task fits in one sentence and names the exact files → fast/cheap tier; if it needs a design decision, touches an interface, or its file set is unknown → capable tier. When unsure, capable.
+- **Cap concurrency** at ~3-4 in-flight writers (context and cost blow up past that); queue the rest.
+- **Isolate failures:** if one agent fails verification, quarantine its worktree and integrate the passing ones — don't block the whole batch on one bad result.
 
 ## Synthesis
 Collect all results, **dedupe and merge**, resolve any conflicts explicitly, and present one unified outcome — don't just concatenate agent reports.

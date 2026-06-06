@@ -38,6 +38,7 @@ Touch only what the task requires. Clean up only your own mess.
 Convert imperative tasks into verifiable goals, then loop until verified.
 - "Add validation" → "write tests for invalid inputs, then make them pass." "Fix the bug" → "write a test that reproduces it, then make it pass."
 - State a brief plan where each step has a `verify:` check. Strong success criteria let you work autonomously; weak ones ("make it work") force constant clarification.
+- **Bound the loop.** If the same goal fails verification ~3 times, stop and report the failure with its evidence — do **not** weaken the test, widen a tolerance, or delete the assertion to force green. Moving the goalposts to claim success is the exact failure this principle exists to prevent.
 - **Test:** For the work you're about to do, what concrete observation proves it's done? If you can't name it, you don't have a goal yet.
 
 ## 5. Evidence over assertion
@@ -50,4 +51,4 @@ Never claim something works, is fixed, or is complete without fresh evidence in 
 
 - **Name the rationalization.** When you catch yourself thinking "this is too simple to need a test/spec/check," that thought *is* the signal to do it anyway. The shortcut feels right precisely when it's most expensive.
 - **Context hygiene.** Compact at logical boundaries (after research → before implementation; after a milestone; after a failed approach), not mid-implementation where you'd lose file paths and partial state. Durable facts go in files (CONTEXT.md, ADRs, the plan), not in fragile conversation memory.
-- **Match rigor to stakes.** A one-line typo fix doesn't need the full pipeline; a payment flow does. Use judgment — but bias toward rigor on anything non-trivial, because under-rigor is the costlier error.
+- **Match rigor to stakes — by trigger, not by vibe.** Run the full pipeline (brainstorm → plan → tdd → review → verify) when **any** hold: the change touches auth, payments, data deletion, migrations, or security; it alters a public API, schema, or persisted/wire format; or the diff is large (rule of thumb: > ~50 lines or > 3 files). Below all of those, a single `forge:verify` pass suffices. When unsure, treat it as above the line — under-rigor is the costlier error.

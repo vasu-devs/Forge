@@ -19,7 +19,7 @@ forge's continuous-learning layer. It captures the *non-obvious* patterns of wor
 How the layer fits together (it runs **automatically** — you rarely need to invoke this by hand):
 - A **PostToolUse hook** silently logs every Edit/Write/Bash action to a project-scoped observations log (deterministic — survives compaction).
 - A **Stop hook** (`stop-autolearn.js`) fires when each turn ends and, once enough new work has accumulated (batched — every `FORGE_LEARN_EVERY` actions, default 8), spawns a **detached background distiller** (`distill.js`) that asks a small model (Haiku) to extract lessons. It never blocks you; the env-guard `FORGE_DISTILLER=1` prevents recursion.
-- The distiller applies a **strict quality gate** (confidence floor, length/platitude filters, anonymization lint for global lessons, per-run caps) so only sharp, non-bogus knowledge is kept.
+- The distiller applies a **strict quality gate** (confidence floor, length/platitude filters, a best-effort anonymization backstop for global lessons, per-run caps) so only sharp, non-bogus knowledge is kept. The manual `add`/`add-global` CLI runs the *same* gate, so the hand path can't sneak past the rules.
 - A **SessionStart hook** auto-injects the highest-confidence **global lessons** (everywhere) + **this project's instincts** into future sessions (capped; nothing injected where there's nothing learned).
 
 **This skill (`forge:learn`) is the manual/deliberate path** — use it to capture a specific lesson on demand, force a distillation now, or curate (prune/refine) what's been learned. The automatic loop handles the steady-state.
@@ -64,9 +64,9 @@ Read that log, then review the conversation for signals worth keeping:
 ```
 node "$HOME/.claude/skills/forge/scripts/forge-store.js" add '{"trigger":"...","action":"...","confidence":0.8,"evidence":"..."}'
 ```
-(Accepts a single JSON object or a JSON array. Re-adding refines confidence — the highest wins, dupes collapse.)
+(Accepts a single JSON object or a JSON array. Re-adding **appends**; on read, duplicates collapse to the highest-confidence copy — to *lower* a confidence, `remove` it then re-add. The CLI rejects one-word and platitude entries, so keep them specific.)
 
-For an **anonymized global lesson** (transferable, no project specifics), use `add-global` instead — it also re-renders `~/.claude/forge-data/LESSONS.md`:
+For an **anonymized global lesson** (transferable, no project specifics), use `add-global` instead — it re-renders `~/.claude/forge-data/LESSONS.md` and **rejects anything that looks project-specific** (a path, filename, version token, or scoped package) or platitudinous. That backstop is best-effort, not a guarantee — *you* still own the anonymization:
 ```
 node "$HOME/.claude/skills/forge/scripts/forge-store.js" add-global '{"trigger":"<general situation>","action":"<corrected behavior>","confidence":0.8,"evidence":"<why, no project names>"}'
 ```

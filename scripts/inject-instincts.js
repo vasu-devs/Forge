@@ -20,6 +20,15 @@ function main() {
   const L = require('./lib.js');
   const projDir = process.env.CLAUDE_PROJECT_DIR || process.cwd();
 
+  // forge:graph — refresh the live code map in the background (build if missing, else mtime-patch).
+  try {
+    if ((process.env.FORGE_GRAPH || 'on').toLowerCase() !== 'off') {
+      const path = require('path'), { spawn } = require('child_process');
+      spawn(process.execPath, [path.join(__dirname, 'graph.js'), 'refresh', projDir],
+        { detached: true, stdio: 'ignore', windowsHide: true }).unref();
+    }
+  } catch { /* fail-open */ }
+
   // Personalization profile (who the user is / how they work) — loaded everywhere if present.
   let profileSec = '';
   try {
@@ -28,6 +37,17 @@ function main() {
     if (fs.existsSync(pf)) {
       const p = fs.readFileSync(pf, 'utf8').trim().slice(0, 4000);
       if (p) profileSec = '## forge — about you (personalization)\nWho you are and how you like to work, learned across past sessions. Tailor to it; an explicit user instruction always wins.\n\n' + p;
+    }
+  } catch {}
+
+  // Live code map snapshot (forge:graph) — fresh structural context, written by graph.js.
+  let graphSec = '';
+  try {
+    const fs = require('fs'), path = require('path');
+    const sf = path.join(L.BASE, 'graph', L.projId(projDir), 'snapshot.md');
+    if ((process.env.FORGE_GRAPH || 'on').toLowerCase() !== 'off' && fs.existsSync(sf)) {
+      const s = fs.readFileSync(sf, 'utf8').trim().slice(0, 2000);
+      if (s) graphSec = s;
     }
   } catch {}
 
@@ -46,6 +66,7 @@ function main() {
     project
   );
   if (profileSec) parts.push(profileSec);
+  if (graphSec) parts.push(graphSec);
   if (gSec) parts.push(gSec);
   if (pSec) parts.push(pSec);
   if (!parts.length) return;

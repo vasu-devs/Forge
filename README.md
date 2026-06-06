@@ -18,7 +18,7 @@
   <img alt="version" src="https://img.shields.io/badge/version-2.0.0-4c1?style=flat-square">
   <img alt="license MIT" src="https://img.shields.io/badge/license-MIT-blue?style=flat-square">
   <img alt="core deps zero" src="https://img.shields.io/badge/core_deps-0-brightgreen?style=flat-square&logo=nodedotjs&logoColor=white">
-  <img alt="skills 15" src="https://img.shields.io/badge/skills-15-orange?style=flat-square">
+  <img alt="skills 16" src="https://img.shields.io/badge/skills-16-orange?style=flat-square">
   <img alt="platform" src="https://img.shields.io/badge/platform-mac_•_linux_•_win-lightgrey?style=flat-square">
 </p>
 
@@ -91,7 +91,8 @@ A raw model has predictable failure modes: it assumes silently, over-builds, edi
 
 | | |
 |---|---|
-| 🔁 **Full SDLC** | 15 hand-off-linked skills, from understanding code to shipping it |
+| 🔁 **Full SDLC** | 16 hand-off-linked skills, from understanding code to shipping it |
+| 🗺️ **Live code map** | a self-updating dependency graph (god-nodes · modules · blast-radius) — never stale |
 | 🧠 **Learns as you work** | a background distiller turns your sessions into durable "instincts" |
 | 🌍 **Two memory tiers** | per-project instincts + anonymized cross-project lessons |
 | 🔎 **Cross-session recall** | *(opt-in)* local semantic search over past chats + `claude --resume` links |
@@ -171,10 +172,10 @@ flowchart TD
 
 ---
 
-## The 15 skills
+## The 16 skills
 
 <details open>
-<summary><b>📋 All 15 skills</b> — the mechanism each one enforces (click to collapse)</summary>
+<summary><b>📋 All 16 skills</b> — the mechanism each one enforces (click to collapse)</summary>
 
 <br>
 
@@ -195,6 +196,7 @@ flowchart TD
 | **`forge:design-ui`** | frontend | Anti-slop UI. Tunable dials; mechanically-checkable bans; commit to one direction; render-and-look before shipping. |
 | **`forge:learn`** | memory | Distill durable lessons into project instincts + anonymized global lessons. Runs automatically; also invokable. |
 | **`forge:recall`** | memory (x-session) | Semantic search of PAST sessions + **resume a chat** (`claude --resume <id>`); local embeddings + a personalization profile. Opt-in. |
+| **`forge:graph`** | structure | A **live, self-updating** code map: god-nodes (most-depended-on), module/cluster architecture, and `neighbors`/`impact` (blast-radius) queries. Zero-dep; patched by the hooks so it never goes stale. |
 
 </details>
 
@@ -252,6 +254,27 @@ flowchart TD
 ```
 
 <div align="right"><sub><a href="#top">↑ back to top</a></sub></div>
+
+---
+
+## Live code map (`forge:graph`)
+
+forge keeps a **dependency graph of the repo that updates itself** — so the agent always has *current* structural context instead of a stale one-time scan. Zero-dependency, fully local, a native synthesis of the three code-graph ideas:
+
+- **god-nodes** (graphify) — the most-depended-on files; the real hotspots.
+- **module / cluster map** (Understand-Anything) — architecture at a glance.
+- **neighbors / impact** (CodeGraph) — who imports a file, and the transitive blast radius of changing it.
+
+Built once, then patched after every turn by the `Stop` hook (mtime-diff — only changed files reparse), with a compact map injected at `SessionStart`. Query it directly:
+
+```bash
+G=~/.claude/skills/forge/scripts/graph.js
+node "$G" map               # god-nodes + modules
+node "$G" neighbors <file>  # imports ↑ / importers ↓
+node "$G" impact <file>     # transitive blast radius
+```
+
+Edges are static imports for JS/TS, Python, C/C++, Ruby, and Rust (resolved to real files); it won't see dynamic dispatch or tsconfig path-aliases — a high-accuracy skeleton, not a completeness proof. Disable with `FORGE_GRAPH=off`.
 
 ---
 
@@ -316,6 +339,8 @@ Set under `"env"` in `~/.claude/settings.json`:
 | `FORGE_EMBED_MODEL` | `Xenova/all-MiniLM-L6-v2` | *(add-on)* local embedding model. |
 | `FORGE_PROFILE_EVERY` | `3` | *(add-on)* rebuild the profile every N indexed sessions. |
 
+**Live code map (`forge:graph`):** `FORGE_GRAPH=off` turns the whole subsystem off; `FORGE_GRAPH_MAX_FILES` (default `5000`) caps how many files are scanned.
+
 </details>
 
 *Cost:* the distiller runs on your own plan. To keep it lean, raise `FORGE_LEARN_EVERY` and/or keep Haiku. `FORGE_DISTILL_DRYRUN` / `FORGE_DISTILL_MOCK` exercise the pipeline without spending tokens (see [CONTRIBUTING.md](./CONTRIBUTING.md)).
@@ -329,8 +354,8 @@ Set under `"env"` in `~/.claude/settings.json`:
 Transparency, because always-on hooks deserve it. When forge is enabled:
 
 - **`PostToolUse`** → writes one line per `Edit`/`Write`/`Bash` to `~/.claude/forge-data/observations/<project>.jsonl`. Stays on your machine.
-- **`Stop`** → may spawn a background `claude -p` call **on your subscription** to distill lessons. Batched, detached, never blocks you.
-- **`SessionStart`** → injects the local lessons (+ profile, if present) into context.
+- **`Stop`** → patches the live **code map** (cheap, fully local) and — throttled — may spawn a background `claude -p` call **on your subscription** to distill lessons. Detached, never blocks you.
+- **`SessionStart`** → injects the local lessons, the personalization profile (if present), and the live **code map**, and kicks off a background graph refresh.
 - **`SessionEnd`** → *only if the memory add-on is installed* — indexes the finished session locally. Disable with `FORGE_AUTOINDEX=off`.
 
 Nothing leaves your machine except the `claude -p` calls you're already authorized to make. **No telemetry.** Turn it all off with `{ "env": { "FORGE_AUTOLEARN": "off" } }`.
@@ -383,11 +408,12 @@ forge/
 ├── scripts/                                   # zero-dependency Node core
 │   ├── lib.js · log-tool-use.js · inject-instincts.js
 │   ├── stop-autolearn.js · distill.js · session-index.js
-│   └── forge-store.js                         # lessons/instincts CLI
+│   ├── forge-store.js                         # lessons/instincts CLI
+│   └── graph.js                               # live code-map engine + CLI (zero-dep)
 ├── memory/                                    # OPT-IN recall add-on (local embeddings)
 │   └── lib-mem.mjs · forge-mem.mjs
 ├── docs/research/                             # the deep-research report behind the memory design
-└── skills/<name>/SKILL.md                     # the 15 skills
+└── skills/<name>/SKILL.md                     # the 16 skills
 ```
 
 </details>

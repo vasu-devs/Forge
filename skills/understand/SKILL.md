@@ -19,7 +19,8 @@ Editing code you haven't mapped is the fastest route to breakage. Spend a little
 ## 1. Pick the cheapest accurate lens
 
 - **If CodeGraph MCP tools are available** (`codegraph_explore`, `codegraph_search`, `codegraph_callers`, `codegraph_impact` — present when `/codegraph-here` has been activated for this repo): prefer `codegraph_explore` for "how does X work / how does X reach Y" and `codegraph_impact` before changing a symbol. One call replaces many grep/read round-trips and follows dynamic-dispatch hops grep can't.
-- **Otherwise**: Grep/Glob for entry points and definitions, then Read only the files on the relevant path. Don't read the whole tree. To gauge **blast radius without CodeGraph**, grep the symbol's *definition name* across the repo to enumerate its call sites — the symbols with the most references are your hotspots.
+- **Else use `forge:graph`** — forge's always-on, zero-setup live code map. `node ~/.claude/skills/forge/scripts/graph.js map` for hotspots + module layout, `neighbors <file>` / `impact <file>` for blast radius. One call beats grepping around.
+- **Then** Grep/Glob for entry points and definitions and Read only the files on the relevant path — don't read the whole tree. (If `forge:graph` is unavailable, approximate fan-in by grepping a symbol's *definition name* for its call sites.)
 - **Read the tests and the types/interfaces first.** A module's tests state its contract (and the repo's vocabulary) more densely than its implementation; type/interface signatures map the shape faster than reading call sites. Start there, then drop into bodies only as needed.
 
 ## 2. Iterative retrieval — learn the repo's words

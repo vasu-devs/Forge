@@ -1,6 +1,17 @@
-<p align="center">
-  <img src="docs/forge-banner.svg" alt="forge — the SDLC skill set that learns as you work" width="820">
-</p>
+```text
+                    \   |   /
+                  ___\ (#) /___
+                 [_____________]
+                    \       /
+                    /_______\
+
+   ███████╗ ██████╗ ██████╗  ██████╗ ███████╗
+   ██╔════╝██╔═══██╗██╔══██╗██╔════╝ ██╔════╝
+   █████╗  ██║   ██║██████╔╝██║  ███╗█████╗
+   ██╔══╝  ██║   ██║██╔══██╗██║   ██║██╔══╝
+   ██║     ╚██████╔╝██║  ██║╚██████╔╝███████╗
+   ╚═╝      ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
+```
 
 # forge 🔨
 
@@ -335,7 +346,7 @@ forge/
 │   └── forge-store.js       # CLI: list/add/remove instincts & global lessons
 ├── memory/                  # OPT-IN recall add-on (one dependency: local embeddings)
 │   ├── package.json · lib-mem.mjs · forge-mem.mjs   # index / recall / chats / profile
-├── docs/                    # banner + logo (svg) + research/
+├── docs/                    # research/ (the ASCII banner lives in this README)
 └── skills/<name>/SKILL.md   # the 15 skills
 ```
 

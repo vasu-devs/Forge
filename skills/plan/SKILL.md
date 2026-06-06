@@ -18,7 +18,7 @@ A good first slice is the thinnest thing that produces a real, observable end-to
 Size each task to one 2-5 minute action, in this rhythm:
 1. Write a failing test for this slice → 2. Run it, watch it fail (RED) → 3. Implement the minimum to pass → 4. Run it (GREEN) → 5. Commit.
 
-State the verifiable success criterion for each task — a test or concrete check, not "make it work." (This is `shunya:principles` #4, made concrete.)
+State the verifiable success criterion for each task — a test or concrete check, not "make it work." (This is `forge:principles` #4, made concrete.)
 
 ## No placeholders
 
@@ -30,8 +30,8 @@ The executor may read tasks out of order and has no context beyond the plan. The
 ## Order and parallelism
 
 - Order by dependency. Reference blockers by real task IDs ("blocked by T2"), added only once T2 exists.
-- Mark which tasks are independent and safe to parallelize — hand those to `shunya:orchestrate` to run concurrently with fresh agents.
+- Mark which tasks are independent and safe to parallelize — hand those to `forge:orchestrate` to run concurrently with fresh agents.
 - Keep the plan in a file, not just the conversation — it's a durable artifact that survives compaction.
 
 ## Exit
-Execute with `shunya:tdd` (one slice at a time), request `shunya:review` after meaningful chunks, and `shunya:verify` before claiming done.
+Execute with `forge:tdd` (one slice at a time), request `forge:review` after meaningful chunks, and `forge:verify` before claiming done.

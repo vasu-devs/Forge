@@ -1,6 +1,6 @@
 {
-  "name": "shunya",
+  "name": "forge",
   "version": "2.0.0",
-  "description": "SOTA software-development-lifecycle skill set — a curated synthesis of the best, most distinctive mechanisms from Superpowers, Matt Pocock, Taste Skill, Karpathy, Anthropic's official skills, and ECC. One cohesive group, no juggling: principles → understand → brainstorm → architect → plan → tdd → debug → review → verify → ship, with orchestrate (parallel-agent dispatch), eval (pass@k harness), design-ui (anti-slop frontend), a continuous-learning instinct layer (shunya:learn + hooks), and shunya:recall — opt-in local semantic cross-session memory + personalization.",
+  "description": "SOTA software-development-lifecycle skill set — a curated synthesis of the best, most distinctive mechanisms from Superpowers, Matt Pocock, Taste Skill, Karpathy, Anthropic's official skills, and ECC. One cohesive group, no juggling: principles → understand → brainstorm → architect → plan → tdd → debug → review → verify → ship, with orchestrate (parallel-agent dispatch), eval (pass@k harness), design-ui (anti-slop frontend), a continuous-learning instinct layer (forge:learn + hooks), and forge:recall — opt-in local semantic cross-session memory + personalization.",
   "author": { "name": "Vasu", "email": "vasu@agentroster.io" }
 }

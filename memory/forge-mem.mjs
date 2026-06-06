@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// shunya memory CLI. Commands:
+// forge memory CLI. Commands:
 //   index [--limit N | --all]   ingest Claude Code transcripts -> chat catalog + memories (+embeddings)
 //   recall "<query>" [-k N]     semantic recall of memories, with source-chat resume links
 //   chats  "<query>" [-k N]     find relevant PAST CHATS, with `claude --resume <id>`
@@ -16,7 +16,7 @@ const has = (name) => argv.includes(name);
 const query = () => argv.slice(1).filter(a => !a.startsWith('-') && argv[argv.indexOf(a) - 1] !== '-k').join(' ').trim();
 
 function indexPrompt(convo, project) {
-  return `You are shunya's memory indexer. Summarize this Claude Code session and extract durable memories worth recalling later. Output STRICT JSON only, no prose:
+  return `You are forge's memory indexer. Summarize this Claude Code session and extract durable memories worth recalling later. Output STRICT JSON only, no prose:
 {"title":"<= 8 words","summary":"2-4 sentences on what happened and what was decided","topics":["short","tags"],"memories":[{"text":"a durable fact, preference, decision, or gotcha","kind":"fact|preference|decision|gotcha|topic","importance":1-10,"scope":"global|project"}]}
 
 Rules: memories must be specific and durable (worth knowing in a future session). "scope":"global" = a fact/preference about the USER or how they like to work that applies to ANY project; "scope":"project" = specific to this repo. importance: 8-10 only if clearly significant. Max 6 memories; fewer is fine; [] if nothing durable. Project folder: ${project}.
@@ -25,7 +25,7 @@ SESSION:
 ${convo}`;
 }
 function profilePrompt(ctx) {
-  return `You are shunya's personalization profiler. From the memories and recent chat summaries below, write a concise, well-organized markdown profile of THIS USER for an AI coding agent to read at the start of every session: who they are, their stack/tools, strong preferences and working style, and current projects/goals. Be factual, no fluff, no invented details. Prefer bullet points under short headings. Keep it under ~250 words. Output STRICT JSON only: {"profile":"<markdown>"}
+  return `You are forge's personalization profiler. From the memories and recent chat summaries below, write a concise, well-organized markdown profile of THIS USER for an AI coding agent to read at the start of every session: who they are, their stack/tools, strong preferences and working style, and current projects/goals. Be factual, no fluff, no invented details. Prefer bullet points under short headings. Keep it under ~250 words. Output STRICT JSON only: {"profile":"<markdown>"}
 
 CONTEXT:
 ${ctx}`;
@@ -72,7 +72,7 @@ async function autoindex() {
     if (title) { console.log('auto-indexed:', title); indexed = true; }
   }
   // periodic profile refresh
-  const every = parseInt(process.env.SHUNYA_PROFILE_EVERY || '3', 10);
+  const every = parseInt(process.env.FORGE_PROFILE_EVERY || '3', 10);
   const st = L.readJson(L.stateFile());
   st._sinceProfile = (Number(st._sinceProfile) || 0) + (indexed ? 1 : 0);
   if (indexed && (!fs.existsSync(L.profileFile()) || st._sinceProfile >= every)) {
@@ -114,7 +114,7 @@ async function recall() {
   const q = query();
   if (!q) { console.error('usage: recall "<query>" [-k N]'); process.exit(1); }
   const mems = L.readJsonl(L.memoriesFile());
-  if (!mems.length) { console.log('(no memories yet — run: shunya-mem index)'); return; }
+  if (!mems.length) { console.log('(no memories yet — run: forge-mem index)'); return; }
   const k = parseInt(opt('-k', '6'), 10);
   const qv = await L.embed(q);
   const now = Date.now();
@@ -133,7 +133,7 @@ async function chats() {
   const q = query();
   if (!q) { console.error('usage: chats "<query>" [-k N]'); process.exit(1); }
   const cs = L.readJsonl(L.chatsFile());
-  if (!cs.length) { console.log('(no chats indexed yet — run: shunya-mem index)'); return; }
+  if (!cs.length) { console.log('(no chats indexed yet — run: forge-mem index)'); return; }
   const k = parseInt(opt('-k', '5'), 10);
   const qv = await L.embed(q);
   const scored = cs.map(c => ({ c, rel: (L.cosine(c.embedding || [], qv) + 1) / 2 })).sort((a, b) => b.rel - a.rel).slice(0, k);
@@ -149,7 +149,7 @@ async function chats() {
 async function profile() {
   const mems = L.readJsonl(L.memoriesFile()).filter(m => m.scope === 'global' || m.kind === 'preference' || m.kind === 'fact');
   const cs = L.readJsonl(L.chatsFile()).slice(-40);
-  if (!mems.length && !cs.length) { console.log('(nothing to profile yet — run: shunya-mem index)'); return; }
+  if (!mems.length && !cs.length) { console.log('(nothing to profile yet — run: forge-mem index)'); return; }
   const ctx = 'MEMORIES:\n' + mems.slice(0, 60).map(m => `- (${m.kind}) ${m.text}`).join('\n') +
     '\n\nRECENT CHAT SUMMARIES:\n' + cs.map(c => `- ${c.title}: ${c.summary}`).join('\n');
   const parsed = L.claudeJSON(profilePrompt(ctx));
@@ -163,7 +163,7 @@ function status() {
   const mems = L.readJsonl(L.memoriesFile());
   const cs = L.readJsonl(L.chatsFile());
   const prof = fs.existsSync(L.profileFile());
-  console.log('shunya memory status');
+  console.log('forge memory status');
   console.log('  memories:', mems.length, '(' + mems.filter(m => m.scope === 'global').length + ' global)');
   console.log('  chats indexed:', cs.length);
   console.log('  profile:', prof ? 'present (' + L.profileFile() + ')' : 'not generated yet');
@@ -178,6 +178,6 @@ function status() {
     else if (cmd === 'chats') await chats();
     else if (cmd === 'profile') await profile();
     else if (cmd === 'status') status();
-    else console.log('usage: shunya-mem.mjs [index [--limit N|--all] | recall "<q>" [-k N] | chats "<q>" [-k N] | profile | status]');
-  } catch (e) { console.error('shunya-mem error:', e && e.message); process.exit(1); }
+    else console.log('usage: forge-mem.mjs [index [--limit N|--all] | recall "<q>" [-k N] | chats "<q>" [-k N] | profile | status]');
+  } catch (e) { console.error('forge-mem error:', e && e.message); process.exit(1); }
 })();

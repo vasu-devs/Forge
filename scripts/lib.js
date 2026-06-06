@@ -1,16 +1,16 @@
 'use strict';
-// Shared helpers for shunya instinct scripts. No external deps. Used by both
-// the plugin hooks (SessionStart/PostToolUse) and the agent-invoked shunya-store CLI.
+// Shared helpers for forge instinct scripts. No external deps. Used by both
+// the plugin hooks (SessionStart/PostToolUse) and the agent-invoked forge-store CLI.
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
 // Fixed, deterministic data dir so hooks AND the agent CLI always agree on location,
 // regardless of whether CLAUDE_PLUGIN_DATA is set in a given context.
-const BASE = process.env.SHUNYA_DATA_DIR || path.join(os.homedir(), '.claude', 'shunya-data');
+const BASE = process.env.FORGE_DATA_DIR || path.join(os.homedir(), '.claude', 'forge-data');
 
 // Normalize a directory to a canonical key so the SessionStart hook (which sees
-// CLAUDE_PROJECT_DIR, possibly msys-style "/c/Users/...") and the shunya-store CLI
+// CLAUDE_PROJECT_DIR, possibly msys-style "/c/Users/...") and the forge-store CLI
 // (which sees native "C:\Users\..." via process.cwd()) resolve to the SAME id.
 function normDir(d) {
   d = String(d || process.cwd());
@@ -49,9 +49,9 @@ function globalMdFile() { return path.join(BASE, 'LESSONS.md'); }
 function renderGlobalMd() {
   const items = dedupeInstincts(readJsonl(globalFile()));
   const lines = [
-    '# shunya — Global Lessons',
+    '# forge — Global Lessons',
     '',
-    '_Anonymized, cross-project lessons distilled by `shunya:learn`. Auto-loaded into every session via the shunya SessionStart hook. This file is a rendered view; the source of truth is `global-lessons.jsonl`. Edit lessons with the shunya-store CLI (`add-global` / `remove-global`), not by hand._',
+    '_Anonymized, cross-project lessons distilled by `forge:learn`. Auto-loaded into every session via the forge SessionStart hook. This file is a rendered view; the source of truth is `global-lessons.jsonl`. Edit lessons with the forge-store CLI (`add-global` / `remove-global`), not by hand._',
     '',
     `_${items.length} lesson(s), highest-confidence first._`,
     ''

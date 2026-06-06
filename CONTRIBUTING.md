@@ -1,6 +1,6 @@
-# Contributing to shunya
+# Contributing to forge
 
-Thanks for your interest! shunya is a **curated synthesis**, not a kitchen sink — so the bar for
+Thanks for your interest! forge is a **curated synthesis**, not a kitchen sink — so the bar for
 anything new is *"is this the single best version of this idea, and does it earn its place?"*
 Sharper mechanisms, bug fixes, cross-platform fixes, and well-scoped new lifecycle skills are all welcome.
 
@@ -14,7 +14,7 @@ learning layer; `.claude-plugin/` holds the manifests.
 
 ## Writing or editing a skill
 
-shunya skills follow Anthropic's skill-authoring guidance:
+forge skills follow Anthropic's skill-authoring guidance:
 
 - **The description is the trigger.** Write it as *what it does* + *when to use it* — not a summary of
   the workflow. If the description summarizes the steps, the model follows the description and skips the body.
@@ -33,15 +33,15 @@ Hard rules, because these run as hooks on every turn:
 - **Cross-platform.** Windows (Git Bash/MSYS) + macOS + Linux. Directory keys go through
   `lib.js` `projId()`/`normDir()` so msys (`/c/Users/...`) and native (`C:\Users\...`) paths reconcile —
   use those helpers, don't hand-roll path keys.
-- **Recursion-safe.** Anything that spawns `claude -p` must set `SHUNYA_DISTILLER=1`; the `Stop` hook
+- **Recursion-safe.** Anything that spawns `claude -p` must set `FORGE_DISTILLER=1`; the `Stop` hook
   no-ops when it sees that. Do **not** use `--bare` for the distill call (it strips auth).
 
 ### Testing scripts without spending tokens or polluting data
 - Syntax: `for f in scripts/*.js; do node --check "$f"; done`
-- Throttle logic: run `stop-autolearn.js` with `SHUNYA_DISTILL_DRYRUN=1` (prints instead of spawning).
-- The distiller's gate/write logic: run `distill.js` with `SHUNYA_DISTILL_MOCK=<file>` (a canned
+- Throttle logic: run `stop-autolearn.js` with `FORGE_DISTILL_DRYRUN=1` (prints instead of spawning).
+- The distiller's gate/write logic: run `distill.js` with `FORGE_DISTILL_MOCK=<file>` (a canned
   `{"result":"{...}"}`) — no model call, no spend.
-- Isolation: set `SHUNYA_DATA_DIR=<temp dir>` so a real run never touches your live `~/.claude/shunya-data`.
+- Isolation: set `FORGE_DATA_DIR=<temp dir>` so a real run never touches your live `~/.claude/forge-data`.
 
 ## Commits & PRs
 

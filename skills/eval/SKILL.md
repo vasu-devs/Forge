@@ -5,7 +5,7 @@ description: Measure non-deterministic behavior — LLM features, agents, prompt
 
 # Eval-driven development
 
-Deterministic code gets `shunya:verify` — run it once, read the output, done. **Non-deterministic behavior** (anything LLM- or agent-driven) needs evals, because a single green run can be luck. Evals are the unit tests of AI work: a repeatable input set + expected behavior + a grader, run enough times to trust the result.
+Deterministic code gets `forge:verify` — run it once, read the output, done. **Non-deterministic behavior** (anything LLM- or agent-driven) needs evals, because a single green run can be luck. Evals are the unit tests of AI work: a repeatable input set + expected behavior + a grader, run enough times to trust the result.
 
 ## Two kinds of eval
 - **Capability** — *can it do the thing?* Target a pass rate (e.g. **pass@k ≥ 0.90**). Used while building/improving a feature.
@@ -30,7 +30,7 @@ Real inputs paired with expected behavior, covering: the common case, the edge c
 - Evals that only exercise the happy path.
 
 ## Evaluating a prompt or skill itself
-Same shape as `shunya:tdd`'s watch-it-fail, applied to instructions: **baseline a fresh agent WITHOUT the skill/prompt** (does it fail or behave wrong?), then add it and confirm it now passes. If it passes either way, the skill isn't earning its place. (This is how Anthropic's `skill-creator` validates skills.)
+Same shape as `forge:tdd`'s watch-it-fail, applied to instructions: **baseline a fresh agent WITHOUT the skill/prompt** (does it fail or behave wrong?), then add it and confirm it now passes. If it passes either way, the skill isn't earning its place. (This is how Anthropic's `skill-creator` validates skills.)
 
 ## Exit
-Capability evals at target pass@k **and** regression evals at pass^k = 1.0 → `shunya:verify` / `shunya:ship`. For an AI app like this one, the LLM ranking, extraction, and tailoring paths are exactly what to put behind evals.
+Capability evals at target pass@k **and** regression evals at pass^k = 1.0 → `forge:verify` / `forge:ship`. For an AI app like this one, the LLM ranking, extraction, and tailoring paths are exactly what to put behind evals.

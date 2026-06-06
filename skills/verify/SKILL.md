@@ -23,16 +23,16 @@ Before any completion claim, you must have **run a check and read its output in 
 For UI specifically: **render the real view and look at it** (a screenshot / headless browser), don't infer from CSS — shipping visuals blind is how regressions hit production.
 
 ## Goal-driven verification
-The success criteria should already exist from `shunya:plan` / `shunya:principles` #4 — each task had a `verify:` check. Run those checks. If criteria were never defined, define them now and then verify against them.
+The success criteria should already exist from `forge:plan` / `forge:principles` #4 — each task had a `verify:` check. Run those checks. If criteria were never defined, define them now and then verify against them.
 
 ## Anti-evasion
 Rephrasing doesn't exempt the rule. "Should be working," "looks correct," "I've implemented it" are all the same unverified claim wearing different words. Either you have this-turn evidence or you don't.
 
 ## Deterministic vs not
-This skill is for **deterministic** work — run it once, read the output. For **non-deterministic** behavior (LLM features, agents, prompts), a single green run can be luck — use `shunya:eval` (pass@k / pass^k) instead of a one-shot check.
+This skill is for **deterministic** work — run it once, read the output. For **non-deterministic** behavior (LLM features, agents, prompts), a single green run can be luck — use `forge:eval` (pass@k / pass^k) instead of a one-shot check.
 
 ## If you can't verify
 Say so plainly: name what you couldn't check and why, and present the work as unverified. An honest "I couldn't run the e2e suite — here's what I did confirm" is worth more than a confident false "done."
 
 ## Exit
-Green with evidence → `shunya:ship`.
+Green with evidence → `forge:ship`.

@@ -32,4 +32,4 @@ Before editing, state a compact map:
 If you're lost, **zoom out one layer**: ask for a map of the relevant modules and their callers rather than diving deeper into one file.
 
 ## When to skip
-A localized edit in code you already understand doesn't need a mapping pass. This is for unfamiliar territory or changes with non-obvious blast radius. Pair with `shunya:architect` (designing new shape) or `shunya:debug` (tracing a failure).
+A localized edit in code you already understand doesn't need a mapping pass. This is for unfamiliar territory or changes with non-obvious blast radius. Pair with `forge:architect` (designing new shape) or `forge:debug` (tracing a failure).

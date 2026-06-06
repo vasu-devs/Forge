@@ -1,4 +1,4 @@
-// shunya memory engine — shared helpers (ESM, because the embedder is ESM).
+// forge memory engine — shared helpers (ESM, because the embedder is ESM).
 // Local-only semantic memory: facts/preferences/decisions + a chat catalog with
 // source-session references so the user can `claude --resume <id>` and go deeper.
 import fs from 'fs';
@@ -6,7 +6,7 @@ import path from 'path';
 import os from 'os';
 import { spawnSync } from 'child_process';
 
-export const BASE = process.env.SHUNYA_DATA_DIR || path.join(os.homedir(), '.claude', 'shunya-data');
+export const BASE = process.env.FORGE_DATA_DIR || path.join(os.homedir(), '.claude', 'forge-data');
 export const MEMDIR = path.join(BASE, 'memory');
 export const memoriesFile = () => path.join(MEMDIR, 'memories.jsonl');
 export const chatsFile = () => path.join(MEMDIR, 'chats.jsonl');
@@ -36,7 +36,7 @@ let _embedder = null;
 export async function getEmbedder() {
   if (_embedder) return _embedder;
   const { pipeline } = await import('@huggingface/transformers');
-  _embedder = await pipeline('feature-extraction', process.env.SHUNYA_EMBED_MODEL || 'Xenova/all-MiniLM-L6-v2');
+  _embedder = await pipeline('feature-extraction', process.env.FORGE_EMBED_MODEL || 'Xenova/all-MiniLM-L6-v2');
   return _embedder;
 }
 export async function embed(text) {
@@ -76,9 +76,9 @@ export function flattenTranscript(file, maxMsgs = 140, maxChars = 16000) {
 
 // --- call Claude headless for extraction/summarization; returns parsed JSON or null ---
 export function claudeJSON(prompt, model) {
-  const r = spawnSync('claude', ['-p', '--model', model || process.env.SHUNYA_LEARN_MODEL || 'claude-sonnet-4-6', '--output-format', 'json'], {
+  const r = spawnSync('claude', ['-p', '--model', model || process.env.FORGE_LEARN_MODEL || 'claude-sonnet-4-6', '--output-format', 'json'], {
     input: prompt, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024,
-    shell: process.platform === 'win32', env: { ...process.env, SHUNYA_DISTILLER: '1' }
+    shell: process.platform === 'win32', env: { ...process.env, FORGE_DISTILLER: '1' }
   });
   if (r.status !== 0) return null;
   let text = r.stdout;

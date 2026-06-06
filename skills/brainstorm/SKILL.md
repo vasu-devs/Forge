@@ -28,4 +28,4 @@ Present the spec in **digestible sections** (problem, scope, approach, what's ex
 - Durable artifacts contain **no file paths or line numbers** — they rot. Describe behavior, not locations.
 
 ## Exit
-When the spec is approved, hand off to `shunya:plan` — not directly to coding. Brainstorm decides *what* and *why*; plan decides *the steps*.
+When the spec is approved, hand off to `forge:plan` — not directly to coding. Brainstorm decides *what* and *why*; plan decides *the steps*.

@@ -1,5 +1,10 @@
 # forge 🔨
 
+![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-7C3AED)
+![License: MIT](https://img.shields.io/badge/license-MIT-blue)
+![Dependencies: zero](https://img.shields.io/badge/dependencies-zero-brightgreen)
+![Skills: 14](https://img.shields.io/badge/skills-14-orange)
+
 **A curated, state-of-the-art software-development-lifecycle skill set for Claude Code — with a memory layer that learns as you work.**
 
 Most people end up with a dozen overlapping Claude Code skill packs and have to remember which to invoke when. **forge is one cohesive plugin instead.** It distills the best, most distinctive *techniques* from across the Claude Code skills ecosystem (full attribution in [CREDITS.md](./CREDITS.md)) into a single, unambiguous lifecycle — `understand → brainstorm → architect → plan → tdd → debug → review → verify → ship`, plus `orchestrate`, `eval`, and `design-ui`.
@@ -12,6 +17,7 @@ On top of that, forge adds a **continuous-learning memory layer**: it quietly no
 
 ## Table of contents
 - [What forge is](#what-forge-is)
+- [In action](#in-action)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Using forge day to day](#using-forge-day-to-day)
@@ -23,6 +29,7 @@ On top of that, forge adds a **continuous-learning memory layer**: it quietly no
 - [Updating & uninstalling](#updating--uninstalling)
 - [How it works under the hood](#how-it-works-under-the-hood)
 - [FAQ / troubleshooting](#faq--troubleshooting)
+- [Contributing](#contributing)
 - [Credits & license](#credits--license)
 
 ---
@@ -36,6 +43,37 @@ forge is a **Claude Code plugin**: a folder of *skills* (instructions Claude loa
 2. **A memory that compounds.** Three hooks form a loop: **capture** what you do → **learn** durable lessons from it → **recall** them in future sessions. Lessons are stored in two tiers — *project instincts* (specific to one repo) and *global lessons* (anonymized, useful everywhere).
 
 The design philosophy throughout: **name the rationalization and forbid it**, prefer **mechanically-checkable rules** over vague advice, separate **deterministic scaffolding from model judgment**, and **build verification into the work**.
+
+---
+
+## In action
+
+You rarely call skills by name — they trigger from what you're doing. A typical feature slice looks like this:
+
+```text
+you:  add OAuth login to the settings page
+
+forge:brainstorm → "Before any code: which providers? where do tokens live?
+                    here's my recommended answer for each…"   (HARD GATE — nothing built until you approve)
+forge:plan       → vertical slices, each: failing test → implement → commit
+forge:tdd        → writes the failing test FIRST, watches it fail, then implements
+forge:review     → a fresh reviewer checks Spec + Standards, side by side
+forge:verify     → runs the suite and shows you the GREEN output before saying "done"
+```
+
+…and the memory loop, across sessions:
+
+```text
+[session 1]  you correct it: "stop bumping timeouts, find the root cause"
+             → forge distills an anonymized GLOBAL lesson in the background
+
+[session 2 — any project]  SessionStart injects:
+   ## forge — global lessons (cross-project)
+   - When intermittent test failures tempt a retry/timeout patch →
+     investigate the root cause first (race, shared state)  (conf 0.85)
+```
+
+> 📹 Recording a short walkthrough? Drop a GIF in `docs/` and embed it here: `![forge demo](docs/demo.gif)`
 
 ---
 
@@ -285,6 +323,18 @@ Design choices worth knowing:
 **Lessons are low quality.** Raise `FORGE_LEARN_MIN_CONF` (e.g. 0.75) and switch `FORGE_LEARN_MODEL` to `claude-sonnet-4-6`. Prune existing ones with the `forge-store.js remove*` commands.
 
 **I have other skill packs and they conflict.** forge is namespaced (`forge:*`), so there's no hard collision. If multiple packs' skills compete to trigger, use Claude Code's `skillOverrides` in settings to set the ones you don't want to `off` or `name-only`.
+
+---
+
+## Contributing
+
+Contributions are welcome — sharper mechanisms, bug fixes, cross-platform fixes, and well-scoped new
+lifecycle skills that earn their place. forge is a *curated* synthesis, so the bar is "is this the best
+version of this idea?" Please **open an issue to discuss new skills before a large PR**.
+
+See **[CONTRIBUTING.md](./CONTRIBUTING.md)** for the conventions: skill-authoring style, the
+zero-dependency cross-platform script rules, how to test the hooks without spending tokens, and the
+commit norms.
 
 ---
 

@@ -36,6 +36,18 @@
           }
         ]
       }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/scripts/session-index.js"],
+            "timeout": 15
+          }
+        ]
+      }
     ]
   }
 }

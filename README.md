@@ -7,7 +7,7 @@
 ![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-7C3AED)
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue)
 ![Dependencies: zero](https://img.shields.io/badge/dependencies-zero-brightgreen)
-![Skills: 14](https://img.shields.io/badge/skills-14-orange)
+![Skills: 15](https://img.shields.io/badge/skills-15-orange)
 
 **A curated, state-of-the-art software-development-lifecycle skill set for Claude Code — with a memory layer that learns as you work.**
 
@@ -25,7 +25,7 @@ On top of that, forge adds a **continuous-learning memory layer**: it quietly no
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Using forge day to day](#using-forge-day-to-day)
-- [The 14 skills](#the-14-skills)
+- [The 15 skills](#the-15-skills)
 - [The continuous-learning memory layer](#the-continuous-learning-memory-layer)
 - [Configuration](#configuration)
 - [⚠️ What the hooks actually do](#️-what-the-hooks-actually-do)
@@ -42,7 +42,7 @@ On top of that, forge adds a **continuous-learning memory layer**: it quietly no
 
 forge is a **Claude Code plugin**: a folder of *skills* (instructions Claude loads on demand), plus a few *hooks* (small scripts Claude Code runs on events) and *agents-free* Node utilities. It has two halves:
 
-1. **A complete SDLC methodology.** Fourteen skills, each a synthesis of the single best mechanism for its phase — not a grab-bag. The discipline is opinionated: test-first, root-cause-before-patching, evidence-before-claiming-done, anti-slop UI, and so on. Skills are namespaced (`forge:tdd`, `forge:debug`, …) so they never collide with anything else you have installed.
+1. **A complete SDLC methodology.** Fifteen skills, each a synthesis of the single best mechanism for its phase — not a grab-bag. The discipline is opinionated: test-first, root-cause-before-patching, evidence-before-claiming-done, anti-slop UI, and so on. Skills are namespaced (`forge:tdd`, `forge:debug`, …) so they never collide with anything else you have installed.
 
 2. **A memory that compounds.** Three hooks form a loop: **capture** what you do → **learn** durable lessons from it → **recall** them in future sessions. Lessons are stored in two tiers — *project instincts* (specific to one repo) and *global lessons* (anonymized, useful everywhere).
 
@@ -84,8 +84,8 @@ forge:verify     → runs the suite and shows you the GREEN output before saying
 ## Requirements
 
 - **Claude Code v2.1+** — plugin hooks auto-load from `hooks/hooks.json` by convention in this version.
-- **Node.js** on your `PATH` — the hook scripts are plain Node, **zero dependencies** (never run `npm install`).
-- For the automatic learning feature only: an authenticated `claude` CLI (you already have this if you use Claude Code). The background distiller calls `claude -p` on your own plan.
+- **Node.js** on your `PATH` — the core hook scripts are plain Node with **zero dependencies**. Only the *optional* `forge:recall` memory add-on needs a one-time `npm install` (a local embedding model).
+- For the automatic learning/memory features: an authenticated `claude` CLI (you already have this if you use Claude Code). The background distiller/indexer call `claude -p` on your own plan.
 
 ---
 
@@ -147,7 +147,7 @@ You can always invoke a skill explicitly, e.g. *"use forge:architect for this"* 
 
 ---
 
-## The 14 skills
+## The 15 skills
 
 | Skill | Phase | What it does (and the key mechanism it enforces) |
 |---|---|---|
@@ -165,6 +165,7 @@ You can always invoke a skill explicitly, e.g. *"use forge:architect for this"* 
 | **`forge:eval`** | measure | Eval-driven development for **non-deterministic / LLM** work that `forge:verify` can't catch in one shot. **pass@k** (capability) vs **pass^k** (regression); a grader hierarchy (code > rule > model-judge > human); baseline-without-the-skill validation. |
 | **`forge:design-ui`** | frontend | Anti-slop UI. Tunable **dials** (variance / motion / density); **mechanically-checkable bans** (em-dash ban, eyebrow-per-3-sections rule, banned palettes, no Inter/AI-purple defaults); commit to one direction; **render-and-look** before shipping; a pre-flight gate. |
 | **`forge:learn`** | memory | Distill durable lessons from the session into project instincts and anonymized global lessons. Runs **automatically** (see below); also invokable for deliberate capture and curation. |
+| **`forge:recall`** | memory (cross-session) | Search your PAST sessions semantically and **resume a specific chat to go deeper** (`claude --resume <id>`), backed by a local embedding index + an auto-loaded personalization profile. Opt-in add-on (`npm install` in `memory/`). |
 
 ---
 
@@ -221,6 +222,27 @@ node ~/.claude/skills/forge/scripts/forge-store.js remove "<substring>"
 node ~/.claude/skills/forge/scripts/forge-store.js remove-global "<substring>"
 ```
 
+### Cross-session recall & personalization (`forge:recall`) — opt-in
+
+Beyond per-project instincts, forge can build a **semantic memory of your past chats** plus a **global personalization profile** ("who you are / how you work") that auto-loads at the start of every session. This add-on has one dependency (a local embedding model), so it's opt-in:
+
+```bash
+cd ~/.claude/skills/forge/memory && npm install   # one-time; pulls a small local ONNX embedding model
+```
+
+It then grows hands-free — a `SessionEnd` hook indexes each finished session in the background. Use it conversationally (*"what did we decide about X?"*, *"continue that thing from yesterday"*) or directly:
+
+```bash
+M=~/.claude/skills/forge/memory/forge-mem.mjs
+node $M index             # ingest past transcripts (--all | --limit N)
+node $M recall "<query>"  # semantic recall of memories, each with a `claude --resume <id>` link
+node $M chats  "<query>"  # find a past chat to reopen
+node $M profile           # (re)build the personalization profile (profile.md)
+node $M status
+```
+
+Every memory carries a **source-chat reference**, so recall hands you the exact `claude --resume <sessionId>` to reopen and go deeper. It's **100% local and personal** — never transmitted. The design + citations behind it: [`docs/research/cross-session-memory-and-personalization.md`](docs/research/cross-session-memory-and-personalization.md).
+
 ---
 
 ## Configuration
@@ -245,6 +267,9 @@ All settings are environment variables. Set them under `"env"` in `~/.claude/set
 | `FORGE_INSTINCT_MAX` / `FORGE_INSTINCT_MIN_CONF` | `12` / `0` | Cap & confidence floor for injected **project instincts**. |
 | `FORGE_GLOBAL_MAX` / `FORGE_GLOBAL_MIN_CONF` | `15` / `0` | Cap & confidence floor for injected **global lessons**. Raise the floor to `0.7+` as the list grows. |
 | `FORGE_DATA_DIR` | `~/.claude/forge-data` | Relocate the data directory. |
+| `FORGE_AUTOINDEX` | `on` | *(memory add-on)* `off` disables auto-indexing finished sessions at `SessionEnd`. |
+| `FORGE_EMBED_MODEL` | `Xenova/all-MiniLM-L6-v2` | *(memory add-on)* local embedding model used for recall. |
+| `FORGE_PROFILE_EVERY` | `3` | *(memory add-on)* rebuild the personalization profile every N auto-indexed sessions. |
 
 **Cost note:** the distiller runs on *your* Claude subscription. Sonnet gives sharper, less-bogus lessons but uses more of your usage budget than Haiku; pair it with a higher `FORGE_LEARN_EVERY` to keep it lean.
 
@@ -256,7 +281,8 @@ Transparency, because always-on hooks deserve it. When forge is installed and en
 
 - **`PostToolUse`** writes one line per `Edit`/`Write`/`Bash` to `~/.claude/forge-data/observations/<project>.jsonl`. Bash commands are logged (truncated). **This stays on your machine** and is never transmitted by forge.
 - **`Stop`** may spawn a background `claude -p` (headless) call **on your Claude subscription** to distill lessons. Batched (default: after 8 logged actions), detached, never blocks you.
-- **`SessionStart`** reads the local lesson files and injects a small text block into the session context.
+- **`SessionStart`** reads the local lesson files (+ the personalization profile, if present) and injects a small text block into the session context.
+- **`SessionEnd`** — *only if the optional memory add-on is installed* — indexes the finished session into your local memory in the background. Disable with `FORGE_AUTOINDEX=off`.
 
 Nothing leaves your machine except the background `claude -p` calls you'd already be authorized to make. **No telemetry, no network calls beyond Claude itself.**
 
@@ -298,15 +324,19 @@ forge/
 ├── .claude-plugin/
 │   ├── plugin.json          # plugin manifest
 │   └── marketplace.json     # lets others /plugin marketplace add this repo
-├── hooks/hooks.json         # PostToolUse + SessionStart + Stop (auto-loaded by Claude Code v2.1+)
-├── scripts/                 # zero-dependency Node
-│   ├── lib.js               # shared paths/storage helpers + project-id normalization
+├── hooks/hooks.json         # PostToolUse + SessionStart + Stop + SessionEnd (auto-loaded, Claude Code v2.1+)
+├── scripts/                 # zero-dependency Node (core)
+│   ├── lib.js               # shared paths/storage helpers + cross-platform project-id normalization
 │   ├── log-tool-use.js      # PostToolUse: append observation
-│   ├── inject-instincts.js  # SessionStart: inject global + project lessons
+│   ├── inject-instincts.js  # SessionStart: inject profile + global lessons + project instincts
 │   ├── stop-autolearn.js    # Stop: throttle + spawn the detached distiller
 │   ├── distill.js           # background: transcript → claude -p → quality gate → store
+│   ├── session-index.js     # SessionEnd: background-index the finished session (if memory add-on present)
 │   └── forge-store.js       # CLI: list/add/remove instincts & global lessons
-└── skills/<name>/SKILL.md   # the 14 skills
+├── memory/                  # OPT-IN recall add-on (one dependency: local embeddings)
+│   ├── package.json · lib-mem.mjs · forge-mem.mjs   # index / recall / chats / profile
+├── docs/                    # banner + logo (svg) + research/
+└── skills/<name>/SKILL.md   # the 15 skills
 ```
 
 Design choices worth knowing:

@@ -3,13 +3,13 @@
   "owner": { "name": "vasu-devs", "url": "https://github.com/vasu-devs" },
   "metadata": {
     "description": "forge — a curated SOTA software-development-lifecycle skill set with a continuous-learning memory layer.",
-    "version": "1.1.0"
+    "version": "1.2.0"
   },
   "plugins": [
     {
       "name": "forge",
       "source": "./",
-      "description": "14 lifecycle skills (principles, understand, brainstorm, architect, plan, tdd, debug, review, verify, ship, orchestrate, eval, design-ui) plus learn, with hooks for automatic project-scoped and global continuous learning."
+      "description": "15 skills across the SDLC (principles, understand, brainstorm, architect, plan, tdd, debug, review, verify, ship, orchestrate, eval, design-ui, learn) plus forge:recall — with hooks for automatic continuous learning and an opt-in local semantic cross-session memory + personalization layer."
     }
   ]
 }

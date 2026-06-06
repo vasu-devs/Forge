@@ -20,6 +20,17 @@ function main() {
   const L = require('./lib.js');
   const projDir = process.env.CLAUDE_PROJECT_DIR || process.cwd();
 
+  // Personalization profile (who the user is / how they work) — loaded everywhere if present.
+  let profileSec = '';
+  try {
+    const fs = require('fs'), path = require('path');
+    const pf = path.join(L.BASE, 'memory', 'profile.md');
+    if (fs.existsSync(pf)) {
+      const p = fs.readFileSync(pf, 'utf8').trim().slice(0, 4000);
+      if (p) profileSec = '## forge — about you (personalization)\nWho you are and how you like to work, learned across past sessions. Tailor to it; an explicit user instruction always wins.\n\n' + p;
+    }
+  } catch {}
+
   const global = pick(L.dedupeInstincts(L.readJsonl(L.globalFile())), 'FORGE_GLOBAL_MIN_CONF', 'FORGE_GLOBAL_MAX', '15');
   const project = pick(L.dedupeInstincts(L.readJsonl(L.instinctsFile(projDir))), 'FORGE_INSTINCT_MIN_CONF', 'FORGE_INSTINCT_MAX', '12');
 
@@ -34,6 +45,7 @@ function main() {
     'Patterns distilled from past sessions in THIS repo. Priors, not laws — a user instruction overrides them.',
     project
   );
+  if (profileSec) parts.push(profileSec);
   if (gSec) parts.push(gSec);
   if (pSec) parts.push(pSec);
   if (!parts.length) return;

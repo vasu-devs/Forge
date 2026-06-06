@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/forge-banner.svg" alt="forge — the SDLC skill set that learns as you work" width="820">
+</p>
+
 # forge 🔨
 
 ![Claude Code plugin](https://img.shields.io/badge/Claude%20Code-plugin-7C3AED)

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 360" role="img" aria-label="forge logo">
+  <defs>
+    <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FCF8F1"/>
+      <stop offset="1" stop-color="#C6BEB1"/>
+    </linearGradient>
+    <radialGradient id="heat" cx="0.5" cy="0.42" r="0.6">
+      <stop offset="0" stop-color="#FF7A1A" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#FF7A1A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="ember" cx="0.5" cy="0.4" r="0.6">
+      <stop offset="0" stop-color="#FFE2B0"/>
+      <stop offset="0.45" stop-color="#FF9A3D"/>
+      <stop offset="1" stop-color="#E8551F"/>
+    </radialGradient>
+  </defs>
+
+  <rect x="0" y="0" width="360" height="360" rx="64" fill="#15120E"/>
+  <rect x="0" y="0" width="360" height="360" rx="64" fill="url(#heat)"/>
+  <rect x="1" y="1" width="358" height="358" rx="63" fill="none" stroke="#2D2820" stroke-width="1.5"/>
+
+  <!-- spark mark -->
+  <g stroke="#FF9A3D" stroke-width="9" stroke-linecap="round">
+    <line x1="180" y1="148" x2="180" y2="80"/>
+    <line x1="180" y1="148" x2="234" y2="106"/>
+    <line x1="180" y1="148" x2="254" y2="150"/>
+    <line x1="180" y1="148" x2="230" y2="206"/>
+    <line x1="180" y1="148" x2="180" y2="222"/>
+    <line x1="180" y1="148" x2="126" y2="206"/>
+    <line x1="180" y1="148" x2="106" y2="150"/>
+    <line x1="180" y1="148" x2="126" y2="106"/>
+  </g>
+  <circle cx="180" cy="148" r="22" fill="url(#ember)"/>
+
+  <!-- wordmark -->
+  <text x="180" y="300" text-anchor="middle" font-family="'Helvetica Neue', 'Arial Black', Arial, sans-serif" font-weight="800" font-size="66" letter-spacing="-3" fill="url(#steel)">forge</text>
+  <rect x="124" y="316" width="112" height="6" rx="3" fill="#EE7A2E"/>
+</svg>

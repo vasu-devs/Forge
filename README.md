@@ -15,7 +15,7 @@
 
 <p>
   <img alt="Claude Code plugin" src="https://img.shields.io/badge/Claude_Code-plugin-7C3AED?style=flat-square&logo=anthropic&logoColor=white">
-  <img alt="version" src="https://img.shields.io/badge/version-2.0.0-4c1?style=flat-square">
+  <img alt="version" src="https://img.shields.io/badge/version-2.1.0-4c1?style=flat-square">
   <img alt="license MIT" src="https://img.shields.io/badge/license-MIT-blue?style=flat-square">
   <img alt="core deps zero" src="https://img.shields.io/badge/core_deps-0-brightgreen?style=flat-square&logo=nodedotjs&logoColor=white">
   <img alt="skills 16" src="https://img.shields.io/badge/skills-16-orange?style=flat-square">
@@ -25,7 +25,7 @@
 <p>
   <a href="#install"><b>Install</b></a> ·
   <a href="#why-forge">Why</a> ·
-  <a href="#the-15-skills">Skills</a> ·
+  <a href="#the-16-skills">Skills</a> ·
   <a href="#the-memory-layer">Memory</a> ·
   <a href="#cross-session-recall--personalization-opt-in">Recall</a> ·
   <a href="#configuration">Config</a> ·
@@ -92,7 +92,7 @@ A raw model has predictable failure modes: it assumes silently, over-builds, edi
 | | |
 |---|---|
 | 🔁 **Full SDLC** | 16 hand-off-linked skills, from understanding code to shipping it |
-| 🗺️ **Live code map** | a self-updating dependency graph (god-nodes · modules · blast-radius) — never stale |
+| 🗺️ **Live code map** | a self-updating dependency graph — god-nodes · modules · blast-radius · cycles · dead-files — never stale |
 | 🧠 **Learns as you work** | a background distiller turns your sessions into durable "instincts" |
 | 🌍 **Two memory tiers** | per-project instincts + anonymized cross-project lessons |
 | 🔎 **Cross-session recall** | *(opt-in)* local semantic search over past chats + `claude --resume` links |
@@ -274,7 +274,7 @@ node "$G" neighbors <file>  # imports ↑ / importers ↓
 node "$G" impact <file>     # transitive blast radius
 ```
 
-Edges are static imports for JS/TS, Python, C/C++, Ruby, and Rust (resolved to real files); it won't see dynamic dispatch or tsconfig path-aliases — a high-accuracy skeleton, not a completeness proof. Disable with `FORGE_GRAPH=off`.
+Edges are static imports for JS/TS (incl. tsconfig `@/…` aliases), Python, C/C++, Ruby, and Rust, resolved to real files; it respects `.gitignore` and also surfaces **cycles, dead files, and orchestrators**. It won't follow dynamic dispatch, monorepo workspace-package imports, or languages without an extractor yet (Go/Java/Kotlin/PHP/C#/Swift appear as edgeless nodes) — a high-accuracy skeleton, not a completeness proof. Disable with `FORGE_GRAPH=off`.
 
 ---
 

@@ -19,6 +19,7 @@ forge keeps a **dependency graph of the whole repo** — built once, then patche
 - **god-nodes** — the most-depended-on files (highest fan-in); the architectural hotspots to touch with care.
 - **modules / clusters** — the architecture at a glance (which directories form cohesive units, how many communities exist).
 - **neighbors / impact** — who imports a file, and the **transitive blast radius** of changing it.
+- **cycles · dead files · orchestrators** — dependency cycles (refactor hazards), orphaned files (0 in / 0 out, non-entry), and high-fan-out composition roots.
 
 It updates itself: a `SessionStart` hook injects a fresh map and triggers a background refresh; the `Stop` hook patches changed files after every turn (mtime-diff — only changed files are reparsed). You usually **read the injected map for free**; reach for the CLI when you need a specific answer.
 
@@ -40,8 +41,8 @@ node "$G" refresh             # build if missing, else mtime-patch (the hooks do
 Paths are **repo-relative with `/` separators** (e.g. `src/api/client.ts`), exactly as the map prints them.
 
 ## What it does and doesn't see
-- **Edges = static imports/requires/includes**, resolved to real repo files: JS/TS (`import`/`require`/dynamic-`import`, relative paths + index resolution), Python (absolute + relative, incl. nested-package suffix match), C/C++ (`#include "…"`), Ruby (`require_relative`), Rust (`mod`).
-- It does **not** follow dynamic dispatch, runtime reflection, or path-alias imports (`@/…` from tsconfig) — those edges won't appear. Treat the map as a high-accuracy skeleton, not a proof of completeness; confirm a critical call path by reading the code (`forge:verify`).
+- **Edges = static imports/requires/includes**, resolved to real repo files: JS/TS (`import`/`require`/dynamic-`import`, relative + index resolution **+ tsconfig/jsconfig `baseUrl`/`paths` aliases like `@/…`**), Python (absolute + relative, incl. nested-package suffix match), C/C++ (`#include "…"`), Ruby (`require_relative`), Rust (`mod`). It respects the repo's `.gitignore` (single-name dir/file entries) so generated/ignored code isn't counted.
+- It does **not** follow dynamic dispatch / runtime reflection, monorepo *workspace-package* imports (bare `@scope/pkg` → another package), or Go module-path imports. Languages without an extractor yet — **Go, Java, Kotlin, PHP, C#, Swift** — are counted as files but appear as **edgeless nodes**. Treat the map as a high-accuracy skeleton, not a completeness proof; confirm a critical call path by reading the code (`forge:verify`).
 - If a deeper **symbol-level** call graph is available (e.g. CodeGraph MCP via `/codegraph-here`), prefer it for precise caller/callee analysis; forge:graph is the always-on, zero-setup baseline.
 
 ## Freshness
